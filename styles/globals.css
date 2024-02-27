@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&display=swap");
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans TC", sans-serif;
+  }
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow-x: hidden;
+    background: var(--Neutral-color-gray-bg, #f5f5f5);
+  }
+}
+
+.home {
+  @apply bg-info-dark;
+}
+
+.directions {
+  @apply bg-secondary;
+}
+
+.h1 {
+  @apply text-xl font-medium sm:text-2xl !important;
+}
+.h2 {
+  @apply text-lg font-medium sm:text-xl !important;
+}
+.text-subtitle-lg {
+  @apply text-lg font-medium sm:text-lg !important;
+}
+.text-subtitle {
+  @apply text-sm font-medium sm:text-base !important;
+}
+.text-body {
+  @apply text-sm font-regular sm:text-base !important;
+}
+.text-body-sm,
+.text-body-sm span,
+.text-body-sm p {
+  @apply font-sans text-sm font-regular !important;
+}
+
+.text-hint {
+  @apply text-xs font-regular !important;
+}
