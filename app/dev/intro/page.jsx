@@ -1,7 +1,9 @@
+import IntroductionPublic from "@/components/dev/IntroductionPublic";
+
 export default function Intro() {
   return (
     <div>
-      <h1>intro</h1>
+      <IntroductionPublic />
     </div>
   );
 }
