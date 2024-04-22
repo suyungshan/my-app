@@ -5,7 +5,7 @@ import io from "socket.io-client";
 
 const socket = io("http://localhost:3001/");
 
-const ToGame = () => {
+export default function ToGame() {
   useEffect(() => {
     socket.emit("sendMessage", {
       name: "majer",
@@ -20,10 +20,8 @@ const ToGame = () => {
   }, []);
 
   socket.on("redirectToGame", () => {
-    window.location.href = "/game";
+    window.location.href = "/player/game";
   });
 
   return;
-};
-
-export default ToGame;
+}

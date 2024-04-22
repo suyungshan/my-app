@@ -5,7 +5,10 @@ import { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { playerDataActions } from "@/store/playerData";
 import Shadow from "./Shadow";
+import Drum from "./Drum";
+import io from "socket.io-client";
 
+const socket = io("http://localhost:3001/");
 export default function GameSet() {
   const [count, setCount] = useState(0);
   const [position, setPosition] = useState({
@@ -18,18 +21,28 @@ export default function GameSet() {
   const countRef = useRef(count);
   const [showShadow, setShowShadow] = useState(true);
   const [countdown, setCountdown] = useState(3);
+  const [data, setData] = useState({ name: "", hit: 0 });
+
+  const hitBlock = () => {
+    setData((prevData) => ({ name: "Sam", hit: prevData.hit + 1 }));
+    socket.emit("hit", data);
+  };
 
   const touchHandler = () => {
-    if (shouldAnimate) {
-      const plus = count + 1;
-      setCount(plus);
-      countRef.current = plus;
-    }
+    // if (shouldAnimate) {
+    //   const plus = count + 1;
+    //   setCount(plus);
+    //   countRef.current = plus;
+    // }
+    const plus = count + 1;
+    setCount(plus);
+    countRef.current = plus;
   };
 
   const speedRef = useRef({
     magnitude: 0,
-    angle: Math.random() * 2 * Math.PI, // 隨機方向（0 到 2π）
+    // angle: Math.random() * 2 * Math.PI, // 隨機方向（0 到 2π）
+    angle: (3 * Math.PI) / 4, //從左下 45 度出發
   });
 
   const updateSpeed = (isFaster) => {
@@ -74,11 +87,29 @@ export default function GameSet() {
       clearInterval(countdownInterval);
       // 載入完後再開始動畫
       animate();
-    }, 4000); // 這裡設定 4 秒是因為有 3 秒倒數 + 1 秒黑色遮罩顯示時間
+      setCountdown(4);
+    }, 3000); // 這裡設定 4 秒是因為有 3 秒倒數 + 1 秒黑色遮罩顯示時間
+
+    const restTimeout = setTimeout(() => {
+      const restCountdownInterval = setInterval(() => {
+        setCountdown((prevCount) => prevCount - 1);
+      }, 1000);
+
+      const seconedStageTimeout = setTimeout(() => {
+        setShowShadow(false);
+        clearInterval(restCountdownInterval);
+      }, 4000);
+
+      return () => {
+        clearInterval(restCountdownInterval);
+        clearTimeout(seconedStageTimeout);
+      };
+    }, 33000);
 
     return () => {
       clearInterval(countdownInterval);
       clearTimeout(countdownTimeout);
+      clearTimeout(restTimeout);
     };
   }, []);
 
@@ -126,6 +157,7 @@ export default function GameSet() {
         console.log("60");
         setShouldAnimate(false);
         speedRef.current.magnitude = 0;
+        setShowShadow(true);
       }, 30000);
 
       // 清理動畫和 timeout，防止組件卸載時仍然執行
@@ -136,7 +168,7 @@ export default function GameSet() {
         clearTimeout(stopTimeout);
       };
     }
-  }, [showShadow, shouldAnimate]);
+  }, [showShadow]);
 
   useEffect(() => {
     console.log("Updated hit:", hit);
@@ -149,7 +181,7 @@ export default function GameSet() {
           <h1 className="text-white text-6xl">{countdown}</h1>
         </Shadow>
       )}
-      <div className="w-full h-full overflow-hidden relative">
+      <div className="w-full h-full overflow-hidden relative select-none">
         <h1
           style={{
             // outline: "3px solid tomato",
@@ -160,18 +192,16 @@ export default function GameSet() {
         >
           {count}
         </h1>
-        <svg
+        <div
           onClick={touchHandler}
-          width="160"
-          height="160"
           style={{
             // outline: "3px solid tomato",
             position: "absolute",
             transform: `translate(${position.x}px, ${position.y}px)`,
           }}
         >
-          <circle cx="80" cy="80" r="80" fill="blue" />
-        </svg>
+          <Drum></Drum>
+        </div>
       </div>
     </>
   );

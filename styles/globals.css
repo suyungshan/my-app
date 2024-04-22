@@ -14,7 +14,15 @@
     width: 100vw;
     height: 100vh;
     overflow-x: hidden;
-    background: var(--Neutral-color-gray-bg, #f5f5f5);
+    background: linear-gradient(
+      to bottom right,
+      #fad2e9 0%,
+      #cedff0 15%,
+      #bdd5ec 20%,
+      #e1e8f3 40%,
+      #e9e4ef 50%,
+      #fad2e9 70%
+    );
   }
 }
 

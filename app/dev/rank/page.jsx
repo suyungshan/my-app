@@ -1,7 +1,9 @@
+import GetData from "@/components/dev/getData";
+
 export default function Rank() {
   return (
     <div>
-      <h1>rank</h1>
+      <GetData></GetData>
     </div>
   );
 }

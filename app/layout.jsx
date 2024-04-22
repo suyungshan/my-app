@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import StoreProvider from "@/store/StoreProvider";
+import SocketProvider from "@/components/fetcher/Socket";
 
 export const metadata = {
   title: "Challenge Your Speed",
@@ -9,8 +10,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="home">
-        <StoreProvider>{children}</StoreProvider>
+      <body>
+        <SocketProvider>
+          <StoreProvider>{children}</StoreProvider>
+        </SocketProvider>
       </body>
     </html>
   );

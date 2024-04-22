@@ -4,5 +4,5 @@ export const metadata = {
 };
 
 export default function GameLayout({ children }) {
-  return <div className="bg-primary">{children}</div>;
+  return <div>{children}</div>;
 }

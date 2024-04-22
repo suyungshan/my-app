@@ -4,5 +4,5 @@ export const metadata = {
 };
 
 export default function DirectionsLayout({ children }) {
-  return <div className="bg-primary">{children}</div>;
+  return <div>{children}</div>;
 }
