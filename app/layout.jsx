@@ -10,11 +10,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>
+      <StoreProvider>
         <SocketProvider>
-          <StoreProvider>{children}</StoreProvider>
+          <body className="flex items-center justify-center ">{children}</body>
         </SocketProvider>
-      </body>
+      </StoreProvider>
     </html>
   );
 }

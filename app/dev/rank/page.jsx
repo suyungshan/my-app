@@ -1,4 +1,4 @@
-import GetData from "@/components/dev/getData";
+import GetData from "@/components/dev/GetData";
 
 export default function Rank() {
   return (

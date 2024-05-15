@@ -1,23 +1,23 @@
 // GameSet.jsx
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { playerDataActions } from "@/store/playerData";
+import { useRouter } from "next/navigation";
 import Drum from "./Drum";
 import Pause from "./Pause";
-import io from "socket.io-client";
 import CountDown from "./CountDown";
+import { SocketContext } from "../fetcher/Socket";
 
-const socket = io("http://localhost:3001/");
 export default function GameSet() {
   const [count, setCount] = useState(0);
   const [drumPosition, setDrumPosition] = useState({
-    x: window.innerWidth / 2 - 80,
-    y: window.innerHeight / 2 - 80,
+    x: window.innerWidth / 2 - 110,
+    y: window.innerHeight / 2 - 75,
   });
   const [pausePosition, setPausePosition] = useState({
-    x: window.innerWidth / 2 - 80,
+    x: window.innerWidth / 2 - 25,
     y: window.innerHeight / 2 - 80,
   });
   const [shouldAnimate, setShouldAnimate] = useState(true);
@@ -25,55 +25,60 @@ export default function GameSet() {
   const hit = useSelector((state) => state.playerData.playerData);
   const countRef = useRef(count);
   const [countdown, setCountdown] = useState(0);
-  const [data, setData] = useState({ name: "", hit: 0 });
+  const name = useSelector((state) => state.playerData.playerData.name);
   const [pause, showPause] = useState(false);
+  const { socket } = useContext(SocketContext);
+  const data = useSelector((state) => state.playerData.record);
+  const router = useRouter();
 
   const hitBlock = () => {
-    setData((prevData) => ({ name: "Sam", hit: prevData.hit + 1 }));
-    socket.emit("hit", data);
+    if (socket) {
+      console.log(countdown);
+    } else {
+      console.error("Socket is null");
+    }
   };
 
   const controlCountDownShadow = (countDownNumber) => {
     setCountdown(countDownNumber);
   };
   const plusHandler = () => {
-    // if (shouldAnimate) {
-    //   const plus = count + 1;
-    //   setCount(plus);
-    //   countRef.current = plus;
-    // }
     const plus = count + 1;
     setCount(plus);
     countRef.current = plus;
   };
   const disCountHandler = () => {
-    // if (shouldAnimate) {
-    //   const plus = count + 1;
-    //   setCount(plus);
-    //   countRef.current = plus;
-    // }
     const disCount = count - 1;
     setCount(disCount);
     countRef.current = disCount;
   };
 
-  const speedRef = useRef({
+  const drumSpeedRef = useRef({
     magnitude: 0,
     // angle: Math.random() * 2 * Math.PI, // 隨機方向（0 到 2π）
     angle: (3 * Math.PI) / 4, //從左下 45 度出發
   });
 
+  const pauseSpeedRef = useRef({
+    magnitude: 0,
+    // angle: Math.random() * 2 * Math.PI, // 隨機方向（0 到 2π）
+    angle: (2 * Math.PI) / 3,
+  });
+
   const updateSpeed = (isFaster) => {
     const speedSize = isFaster ? 6 : 3; // 根據條件決定速度大小
-    speedRef.current.magnitude = speedSize;
+    drumSpeedRef.current.magnitude = speedSize;
+    pauseSpeedRef.current.magnitude = speedSize;
   };
 
   const middleSpeed = () => {
-    speedRef.current.magnitude = 20;
+    drumSpeedRef.current.magnitude = 20;
+    pauseSpeedRef.current.magnitude = 20;
   };
 
-  const heighestSpeed = (isFaster) => {
-    speedRef.current.magnitude = 50;
+  const heighestSpeed = () => {
+    drumSpeedRef.current.magnitude = 50;
+    pauseSpeedRef.current.magnitude = 50;
   };
 
   const animate = () => {
@@ -81,19 +86,25 @@ export default function GameSet() {
       setDrumPosition((prevPos) => {
         const newX =
           prevPos.x +
-          speedRef.current.magnitude * Math.cos(speedRef.current.angle);
+          drumSpeedRef.current.magnitude * Math.cos(drumSpeedRef.current.angle);
         const newY =
           prevPos.y +
-          speedRef.current.magnitude * Math.sin(speedRef.current.angle);
+          drumSpeedRef.current.magnitude * Math.sin(drumSpeedRef.current.angle);
 
-        if (newX < 0 || newX > window.innerWidth - 160) {
+        const headingHeight = document.querySelector("h1").offsetHeight; // 獲取 <h1> 元素的高度
+
+        if (newX < 0 || newX > window.innerWidth - 220) {
           // 計算碰到視窗邊緣時的反彈角度
-          speedRef.current.angle = Math.PI - speedRef.current.angle;
+          drumSpeedRef.current.angle =
+            Math.PI -
+            drumSpeedRef.current.angle +
+            ((Math.random() - 0.5) * Math.PI) / 2;
         }
 
-        if (newY < 0 || newY > window.innerHeight - 160) {
-          // 計算碰到視窗邊緣時的反彈角度
-          speedRef.current.angle = -speedRef.current.angle;
+        if (newY < headingHeight - 20 || newY > window.innerHeight - 150) {
+          // 計算碰到視窗頂部或底部時的反彈角度
+          drumSpeedRef.current.angle =
+            -drumSpeedRef.current.angle + ((Math.random() - 0.5) * Math.PI) / 2;
         }
 
         return { x: newX, y: newY };
@@ -102,22 +113,23 @@ export default function GameSet() {
         // 設置不同的移動角度，例如改變 Math.PI 的值
         const newX =
           prevPos.x +
-          speedRef.current.magnitude *
-            Math.cos(speedRef.current.angle + Math.PI);
-
+          pauseSpeedRef.current.magnitude *
+            Math.cos(pauseSpeedRef.current.angle + Math.PI);
         const newY =
           prevPos.y +
-          speedRef.current.magnitude *
-            Math.sin(speedRef.current.angle + Math.PI);
+          pauseSpeedRef.current.magnitude *
+            Math.sin(pauseSpeedRef.current.angle + Math.PI);
 
-        if (newX < 0 || newX > window.innerWidth - 160) {
+        const headingHeight = document.querySelector("h1").offsetHeight; // 獲取 <h1> 元素的高度
+
+        if (newX < 0 || newX > window.innerWidth - 50) {
           // 計算碰到視窗邊緣時的反彈角度
-          speedRef.current.angle = Math.PI - speedRef.current.angle;
+          pauseSpeedRef.current.angle = Math.PI - pauseSpeedRef.current.angle;
         }
 
-        if (newY < 0 || newY > window.innerHeight - 160) {
-          // 計算碰到視窗邊緣時的反彈角度
-          speedRef.current.angle = -speedRef.current.angle;
+        if (newY < headingHeight || newY > window.innerHeight - 120) {
+          // 計算碰到視窗頂部或底部時的反彈角度
+          pauseSpeedRef.current.angle = -pauseSpeedRef.current.angle;
         }
 
         return { x: newX, y: newY };
@@ -128,22 +140,27 @@ export default function GameSet() {
   };
 
   useEffect(() => {
-    //每五秒自動獲取點擊數據
-    const scoreUpdateInterval = setInterval(() => {
-      console.log(countRef.current); // 使用 ref 取得最新的 count 值
-      const currentCount = countRef.current;
-      dispatch(playerDataActions.updateScore(currentCount));
-    }, 5000);
+    if (socket) {
+      //每五秒自動獲取點擊數據
+      const scoreUpdateInterval = setInterval(() => {
+        console.log(countRef.current); // 使用 ref 取得最新的 count 值
+        const currentCount = countRef.current;
+        dispatch(playerDataActions.updateScore(currentCount));
+        socket.emit("hit", { name: name, score: currentCount });
+      }, 5000);
 
-    const stopUpdatingTimeout = setTimeout(() => {
-      clearInterval(scoreUpdateInterval);
-    }, 30000);
+      const stopUpdatingTimeout = setTimeout(() => {
+        clearInterval(scoreUpdateInterval);
+      }, 30000);
 
-    return () => {
-      clearInterval(scoreUpdateInterval);
-      clearTimeout(stopUpdatingTimeout);
-    };
-  }, []);
+      return () => {
+        clearInterval(scoreUpdateInterval);
+        clearTimeout(stopUpdatingTimeout);
+      };
+    } else {
+      return;
+    }
+  }, [socket]);
 
   useEffect(() => {
     controlCountDownShadow(3);
@@ -171,7 +188,7 @@ export default function GameSet() {
     const sixtyTimeout = setTimeout(() => {
       console.log("60");
       setShouldAnimate(false);
-      speedRef.current.magnitude = 0;
+      drumSpeedRef.current.magnitude = 0;
       // controlCountDownShadow(20); //中場休息
       clearTimeout(sixtyTimeout);
     }, 30000);
@@ -193,8 +210,10 @@ export default function GameSet() {
     const hundredTenTimeout = setTimeout(() => {
       console.log("110");
       setShouldAnimate(false);
-      speedRef.current.magnitude = 0;
+      drumSpeedRef.current.magnitude = 0;
+      pauseSpeedRef.current.magnitude = 0;
       clearTimeout(hundredTenTimeout);
+      router.push("/player/settlement");
     }, 45000);
 
     // 清理動畫和 timeout，防止組件卸載時仍然執行
@@ -209,29 +228,19 @@ export default function GameSet() {
     };
   }, []);
 
-  useEffect(() => {
-    console.log("Updated hit:", hit);
-  }, [hit]);
-
   return (
     <>
-      <CountDown countDown={countdown}></CountDown>
-      <div className="w-full h-full overflow-hidden relative select-none">
-        <h1
-          style={{
-            // outline: "3px solid tomato",
-            position: "absolute",
-            marginLeft: "50vw",
-            fontSize: "6rem",
-          }}
-        >
-          {count}
+      <div className="select-none text-[150px] font-[600] text-[#002060]">
+        <CountDown countDown={countdown}></CountDown>
+      </div>
+      <div className="  flex flex-col w-full h-full overflow-hidden relative select-none">
+        <h1 className="w-full text-center py-4 border-b-2  border-[#002060] text-[36px] font-[600] text-[#002060]">
+          目前分數 {count}
         </h1>
-
         <div
+          className=" flex items-center justify-center w-[220px] h-[150px]"
           onClick={plusHandler}
           style={{
-            // outline: "3px solid tomato",
             position: "absolute",
             transform: `translate(${drumPosition.x}px, ${drumPosition.y}px)`,
           }}
@@ -240,6 +249,7 @@ export default function GameSet() {
         </div>
         {pause && (
           <div
+            className="flex items-center justify-center w-[50px] h-[120px] "
             onClick={disCountHandler}
             style={{
               zIndex: 15,

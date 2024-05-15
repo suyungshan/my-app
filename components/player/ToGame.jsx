@@ -2,10 +2,13 @@
 
 import { useEffect } from "react";
 import io from "socket.io-client";
+import { useRouter } from "next/navigation";
 
 const socket = io("http://localhost:3001/");
 
 export default function ToGame() {
+  const router = useRouter();
+
   useEffect(() => {
     socket.emit("sendMessage", {
       name: "majer",
@@ -20,7 +23,7 @@ export default function ToGame() {
   }, []);
 
   socket.on("redirectToGame", () => {
-    window.location.href = "/player/game";
+    router.push("/player/game");
   });
 
   return;

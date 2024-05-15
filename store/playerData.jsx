@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialPlayerData = { playerData: { name: "", score: 0 } };
+const initialPlayerData = { playerData: { name: "", score: 0 }, record: [] };
 
 const playerDataSlice = createSlice({
   name: "playerData",
@@ -12,6 +12,10 @@ const playerDataSlice = createSlice({
 
     updateScore(state, action) {
       state.playerData.score = action.payload;
+    },
+
+    updateRecord(state, action) {
+      state.record = action.payload;
     },
   },
 });

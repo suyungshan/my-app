@@ -17,7 +17,7 @@ export default function Drum() {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex w-full h-full flex-col items-center justify-center">
       <div className="flex ">
         <motion.div
           className="z-0"
@@ -37,7 +37,7 @@ export default function Drum() {
             </metadata>
             <g
               transform="translate(0.000000,41.000000) scale(0.100000,-0.100000)"
-              fill="#000000"
+              fill="#002060"
               stroke="none"
             >
               <path
@@ -67,7 +67,7 @@ export default function Drum() {
             </metadata>
             <g
               transform="translate(0.000000,45.000000) scale(0.100000,-0.100000)"
-              fill="#000000"
+              fill="#002060"
               stroke="none"
             >
               <path
@@ -99,7 +99,7 @@ export default function Drum() {
           </metadata>
           <g
             transform="translate(0.000000,158.000000) scale(0.100000,-0.100000)"
-            fill="#000000"
+            fill="#002060"
             stroke="none"
           >
             <path

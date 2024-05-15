@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap");
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
@@ -57,4 +57,17 @@
 
 .text-hint {
   @apply text-xs font-regular !important;
+}
+
+@keyframes stretchRight {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.stretch-animation {
+  animation: stretchRight 2s forwards; /* 动画名称、持续时间、延迟、迭代次数、方向、填充方式 */
+  transform-origin: 0 50%;
 }
