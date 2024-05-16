@@ -12,14 +12,8 @@ import { SocketContext } from "../fetcher/Socket";
 
 export default function GameSet() {
   const [count, setCount] = useState(0);
-  const [drumPosition, setDrumPosition] = useState({
-    x: window.innerWidth / 2 - 110,
-    y: window.innerHeight / 2 - 75,
-  });
-  const [pausePosition, setPausePosition] = useState({
-    x: window.innerWidth / 2 - 25,
-    y: window.innerHeight / 2 - 80,
-  });
+  const [drumPosition, setDrumPosition] = useState({});
+  const [pausePosition, setPausePosition] = useState({});
   const [shouldAnimate, setShouldAnimate] = useState(true);
   const dispatch = useDispatch();
   const hit = useSelector((state) => state.playerData.playerData);

@@ -8,10 +8,8 @@ export default function AllName() {
   const { socket } = useContext(SocketContext);
   const router = useRouter();
   const [names, setNames] = useState([]);
-  const [containerWidth, setContainerWidth] = useState(window.innerWidth - 40);
-  const [containerHeight, setContainerHeight] = useState(
-    window.innerHeight - 40
-  );
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(0);
 
   useEffect(() => {
     if (socket) {

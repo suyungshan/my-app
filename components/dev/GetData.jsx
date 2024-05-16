@@ -8,10 +8,8 @@ import RankBar from "./RankBar";
 export default function GetData() {
   const { socket } = useContext(SocketContext);
   const [rank, setRank] = useState([]);
-  const [containerWidth, setContainerWidth] = useState(window.innerWidth - 40);
-  const [containerHeight, setContainerHeight] = useState(
-    window.innerHeight - 40
-  );
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [containerHeight, setContainerHeight] = useState(0);
   const [replay, setReplay] = useState(false);
 
   console.log(rank);
