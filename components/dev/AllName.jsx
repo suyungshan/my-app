@@ -20,6 +20,11 @@ export default function AllName() {
       });
     }
 
+    if (typeof window !== "undefined") {
+      setContainerWidth(window.innerWidth - 40);
+      setContainerHeight(window.innerHeight - 40);
+    }
+
     const handleResize = () => {
       setContainerWidth(window.innerWidth - 40);
       setContainerHeight(window.innerHeight - 40);

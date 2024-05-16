@@ -39,6 +39,22 @@ export default function GameSet() {
     }
   };
 
+  useEffect(() => {
+    // 在客戶端渲染時獲取視窗大小
+    if (typeof window !== "undefined") {
+      setDrumPosition({
+        x: window.innerWidth / 2 - 110,
+        y: window.innerHeight / 2 - 75,
+      });
+      setPausePosition({
+        x: window.innerWidth / 2 - 25,
+        y: window.innerHeight / 2 - 80,
+      });
+    }
+
+    // ... (保持其他程式碼不變)
+  }, []);
+
   const controlCountDownShadow = (countDownNumber) => {
     setCountdown(countDownNumber);
   };
