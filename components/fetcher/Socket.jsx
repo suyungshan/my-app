@@ -15,10 +15,9 @@ export default function SocketProvider({ children }) {
 
   useEffect(() => {
     const newSocket = io(
-      // window.location.host === "one0-hit-game-backend.onrender.com"
-      //   ? "https://one0-hit-game-backend.onrender.com/"
-      //   : "http://localhost:3001"
-      "https://one0-hit-game-backend.onrender.com/"
+      window.location.host === "one0-hit-game-backend.onrender.com"
+        ? "https://one0-hit-game-backend.onrender.com/"
+        : "http://localhost:3001"
     );
 
     setSocket(newSocket);
