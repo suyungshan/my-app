@@ -15,9 +15,10 @@ export default function SocketProvider({ children }) {
 
   useEffect(() => {
     const newSocket = io(
-      window.location.host === "https://gameplay.zeabur.app/"
-        ? "https://one0-hit-game-backend.onrender.com/"
-        : "http://localhost:3001"
+      // window.location.host === "https://gameplay.zeabur.app/"
+      //   ? "https://one0-hit-game-backend.onrender.com/"
+      //   : "http://localhost:3001"
+      "https://one0-hit-game-backend.onrender.com/"
     );
 
     setSocket(newSocket);
