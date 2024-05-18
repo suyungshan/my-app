@@ -29,7 +29,16 @@ export default function CountDown(props) {
 
   return showShadow ? (
     <Shadow onClick={() => {}}>
-      <h1 className="text-white text-6xl">{countdown}</h1>
+      <div className="text-white text-6xl flex flex-col items-center">
+        {props.text === 1 ? (
+          <h1>休息一下</h1>
+        ) : props.text === 2 ? (
+          <h1>遊戲結束</h1>
+        ) : (
+          ""
+        )}
+        {(props.text === 0 || props.text === 1) && <h1>{countdown}</h1>}
+      </div>
     </Shadow>
   ) : null;
 }

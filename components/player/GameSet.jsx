@@ -24,6 +24,7 @@ export default function GameSet() {
   const { socket } = useContext(SocketContext);
   const data = useSelector((state) => state.playerData.record);
   const router = useRouter();
+  const [text, setText] = useState(0);
 
   const hitBlock = () => {
     if (socket) {
@@ -82,13 +83,13 @@ export default function GameSet() {
   };
 
   const middleSpeed = () => {
-    drumSpeedRef.current.magnitude = 20;
-    pauseSpeedRef.current.magnitude = 20;
+    drumSpeedRef.current.magnitude = 11;
+    pauseSpeedRef.current.magnitude = 11;
   };
 
   const heighestSpeed = () => {
-    drumSpeedRef.current.magnitude = 50;
-    pauseSpeedRef.current.magnitude = 50;
+    drumSpeedRef.current.magnitude = 18;
+    pauseSpeedRef.current.magnitude = 18;
   };
 
   const animate = () => {
@@ -199,7 +200,8 @@ export default function GameSet() {
       console.log("60");
       setShouldAnimate(false);
       drumSpeedRef.current.magnitude = 0;
-      // controlCountDownShadow(20); //中場休息
+      controlCountDownShadow(5); //中場休息
+      setText(1);
       clearTimeout(sixtyTimeout);
     }, 30000);
 
@@ -241,7 +243,7 @@ export default function GameSet() {
   return (
     <>
       <div className="select-none text-[150px] font-[600] text-[#002060]">
-        <CountDown countDown={countdown}></CountDown>
+        <CountDown countDown={countdown} text={text}></CountDown>
       </div>
       <div className="  flex flex-col w-full h-full overflow-hidden relative select-none">
         <h1 className="w-full text-center py-4 border-b-2  border-[#002060] text-[36px] font-[600] text-[#002060]">

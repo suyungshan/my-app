@@ -7,10 +7,10 @@ export default function FinalRecord() {
   const score = useSelector((state) => state.playerData.playerData.score);
 
   return (
-    <div className="flex min-w-[300px]  w-full min-h-[400px] h-full justify-between items-center flex-col gap-8 border-2  border-[#002060] rounded-[50px] py-[20px] px-[30px] text-[32px] font-[600] text-[#002060]">
+    <div className="flex min-w-[500px] min-h-[300px] justify-center items-center flex-col gap-8 border-2  border-[#002060] rounded-[50px] py-[20px] px-[30px] text-[32px] font-[600] text-[#002060]">
       <p>最終結果</p>
-      <div className="flex justify-center items-start flex-col gap-12 rounded-[50px] py-[20px] px-[30px]">
-        <p>暱稱:{name}</p>
+      <div className="flex flex-col items-start gap-6">
+        <p className="w-[200px] truncate">暱稱:{name}</p>
         <p>總得分：{score}</p>
       </div>
     </div>
