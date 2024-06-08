@@ -87,7 +87,7 @@ export default function SocketProvider({ children }) {
     });
 
     // 啟動壓力測試
-    // startLoadTest(newSocket);
+    startLoadTest(newSocket);
 
     return () => {
       newSocket.disconnect();
