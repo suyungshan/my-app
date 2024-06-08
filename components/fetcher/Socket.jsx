@@ -73,8 +73,8 @@ export default function SocketProvider({ children }) {
 
   useEffect(() => {
     const newSocket = io(
-      "http://localhost:3001"
-      // "https://one0-hit-game-backend.onrender.com/"
+      // "http://localhost:3001"
+      "https://one0-hit-game-backend.onrender.com/"
     );
 
     setSocket(newSocket);
@@ -87,7 +87,7 @@ export default function SocketProvider({ children }) {
     });
 
     // 啟動壓力測試
-    startLoadTest("http://localhost:3001");
+    startLoadTest("https://one0-hit-game-backend.onrender.com/");
 
     return () => {
       newSocket.disconnect();
@@ -119,7 +119,7 @@ export default function SocketProvider({ children }) {
 
 // 壓力測試函數
 const startLoadTest = (baseUrl) => {
-  const concurrency = 300; // 並發連線數
+  const concurrency = 500; // 並發連線數
   let totalConnections = 0;
   let failedConnections = 0;
 
