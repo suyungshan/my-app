@@ -1,7 +1,8 @@
+import WinnerList from "@/components/dev/WinnerList";
 export default function Winner() {
   return (
     <div>
-      <h1>winner</h1>
+      <WinnerList></WinnerList>
     </div>
   );
 }

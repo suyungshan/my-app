@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { SocketContext } from "../fetcher/Socket";
 import { useContext, useEffect, useState } from "react";
+import styles from "./AllName.module.css";
 
 export default function AllName() {
   const { socket } = useContext(SocketContext);
@@ -13,8 +14,20 @@ export default function AllName() {
 
   useEffect(() => {
     if (socket) {
+      socket.emit("firstNameConnect");
       socket.on("allName", (data) => {
-        setNames(data.reverse());
+        const newData = data.reverse().map((item, index) => {
+          if (index === 0) {
+            return {
+              ...item,
+              isNew: true,
+            };
+          } else {
+            return item;
+          }
+        });
+        console.log(newData);
+        setNames(newData);
       });
     }
 
@@ -46,8 +59,10 @@ export default function AllName() {
   names.slice(0, 20).forEach((item, index) => {
     const box = (
       <div
-        key={index}
-        className="p-3 text-center justify-center border-4 rounded-md border-[#002060] bg-none text-[24px] font-[600] text-[#002060] truncate "
+        key={`${item.name}-${item.isNew}`} // 使用名字和 isNew 屬性作為 key
+        className={`p-3 text-center justify-center border-4 rounded-md border-[#002060] bg-none text-[24px] font-[600] text-[#002060] truncate ${
+          item.isNew ? styles.shake : ""
+        }`}
         style={{
           width: boxSize,
           height: boxHeight,
@@ -87,27 +102,29 @@ export default function AllName() {
   };
 
   return (
-    <div
-      className="flex flex-col items-center overflow-y-hidden overflow-x-hidden border-x-2 border-b-2 border-[#002060] gap-8"
-      style={{
-        width: containerWidth,
-        height: containerHeight,
-      }}
-    >
+    <div>
       <div
         className="text-center justify-center bg-none text-[32px] font-[600] text-[#002060] truncate "
         onClick={turnToIntro}
       >
         已加入玩家：{names.length}
       </div>
-      <div>
-        {rows.map((row, rowIndex) => (
-          <div key={rowIndex} className="flex ">
-            {row.map((box, boxIndex) => (
-              <div key={boxIndex}>{box}</div>
-            ))}
-          </div>
-        ))}
+      <div
+        className="flex flex-col items-center overflow-y-hidden overflow-x-hidden border-x-2 border-b-2 border-[#002060] gap-8"
+        style={{
+          width: containerWidth,
+          height: containerHeight,
+        }}
+      >
+        <div>
+          {rows.map((row, rowIndex) => (
+            <div key={rowIndex} className="flex ">
+              {row.map((box, boxIndex) => (
+                <div key={boxIndex}>{box}</div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,33 @@
+@keyframes shake {
+  0% {
+    transform: translateY(-100%); /* 初始位置在頂部之外 */
+  }
+  30% {
+    transform: translateY(0%); /* 在落體過程中的某個位置 */
+  }
+  50% {
+    transform: translateY(-10%); /* 在落體過程中的某個位置 */
+  }
+  70% {
+    transform: translateY(0%); /* 掉落到底部 */
+  }
+  75% {
+    transform: translateY(-5%); /* 反彈 */
+  }
+  80% {
+    transform: translateY(0%); /* 再次下落 */
+  }
+  85% {
+    transform: translateY(-1%); /* 再次下落 */
+  }
+  95% {
+    transform: translateY(0%); /* 再次下落 */
+  }
+  100% {
+    transform: translateY(0%); /* 最後一次小幅反彈 */
+  }
+}
+
+.shake {
+  animation: shake 0.8s ease-in-out;
+}

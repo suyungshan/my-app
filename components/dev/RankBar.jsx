@@ -1,19 +1,18 @@
 "use client";
 import { useState, useEffect } from "react";
-import { Socket } from "socket.io-client";
 
 export default function RankBar(props) {
   const [rank, setRank] = useState([]);
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    setRank(props.top10Hits);
+    setRank(props.topHits);
     setIsAnimating(true);
 
     setTimeout(() => {
       setIsAnimating(false);
     }, 4000);
-  }, [props.top10Hits]);
+  }, [props.topHits]);
 
   return (
     <div className="flex flex-col  w-full h-full p-2 gap-2">

@@ -46,6 +46,7 @@ export default function NameInput() {
     socket.emit("enterName", { name: nickName, score: 0 });
     setHasError(false);
     setRepeatedName(false);
+    inputRef.current.value = "";
 
     let warningReceived = false;
 
@@ -68,21 +69,24 @@ export default function NameInput() {
   };
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center flex-col items-center absolute bottom-0 gap-1 max-w-[1024px] w-full px-8 border max-h-[200px] h-full">
+      <label
+        htmlFor="name"
+        className="text-[12px] font-[600] text-[#ffffff]  rounded-[20px] py-[2px] px-[30px] "
+      >
+        請輸入遊戲暱稱
+      </label>
       <form
-        className="flex  w-full justify-center items-center flex-col gap-4 border-2  border-[#002060] rounded-[50px] py-[20px] px-[30px]"
+        className="flex w-full max-h-[600px] justify-center items-center flex-col gap-4 border-2  border-[#002060] rounded-[20px] py-[20px] px-[30px] bg-[#E8D1FF]"
         onSubmit={submitHandler}
       >
-        <label htmlFor="name" className="text-[32px] font-[600] text-[#002060]">
-          輸入遊戲 ID
-        </label>
         <input
           ref={inputRef}
           type="text"
           id="name"
           name="name"
           required
-          className={`border-2 text-[24px] text-[#002060] h-[50px] max-w-[500px] w-full ${
+          className={`border-2 text-[9px] text-[#002060] h-[full] max-w-[1024px] w-full rounded-[10px] ${
             repeatedName || hasError ? "border-[red]" : "border-[#002060]"
           }`}
         />
@@ -102,7 +106,7 @@ export default function NameInput() {
         )}
         <button
           type="submit"
-          className="border-2  px-11 border-[#002060] bg-decoration-white text-[24px] font-[500] text-[#002060]"
+          className="border-2 px-11 border-[#002060] bg-decoration-white text-[9px] font-[500] text-[#002060] rounded-[10px]"
         >
           確定
         </button>
