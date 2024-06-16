@@ -63,6 +63,10 @@
   @apply text-xs font-regular !important;
 }
 
+.stretch-animation {
+  animation: stretchRight 2s forwards; /* 动画名称、持续时间、延迟、迭代次数、方向、填充方式 */
+  transform-origin: 0 50%;
+}
 @keyframes stretchRight {
   from {
     transform: scaleX(0);
@@ -71,7 +75,17 @@
     transform: scaleX(1);
   }
 }
-.stretch-animation {
-  animation: stretchRight 2s forwards; /* 动画名称、持续时间、延迟、迭代次数、方向、填充方式 */
-  transform-origin: 0 50%;
+
+.winner-animation {
+  animation: stretchUp 2s forwards;
+  transform-origin: 50% 100%;
+}
+
+@keyframes stretchUp {
+  0% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
 }

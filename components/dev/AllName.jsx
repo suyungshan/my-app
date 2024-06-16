@@ -102,7 +102,7 @@ export default function AllName() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col items-center h-[100vh] py-2">
       <div
         className="text-center justify-center bg-none text-[32px] font-[600] text-[#002060] truncate "
         onClick={turnToIntro}

@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { SocketContext } from "../fetcher/Socket";
 import { useContext, useEffect, useState, useMemo } from "react";
-import RankBar from "./RankBar";
+import WinnerBar from "./WinnerBar";
 
 export default function WinnerList() {
   const { socket } = useContext(SocketContext);
@@ -11,12 +11,8 @@ export default function WinnerList() {
   const [containerWidth, setContainerWidth] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
 
-  console.log(rank);
-
   useEffect(() => {
     if (socket) {
-      socket.emit("firstConnect");
-
       socket.on("allMessage", (data) => {
         setRank(data.reverse());
       });
@@ -51,18 +47,18 @@ export default function WinnerList() {
   }, [rank]);
 
   return (
-    <div>
+    <div className="flex flex-col items-center h-[100vh] p-2">
       <div className="flex justify-center items-baseline">
         <p className="text-[32px] font-[600] text-[#002060]">排行榜</p>
       </div>
       <div
-        className="flex flex-col overflow-hidden p-5 border-x-2 border-b-2  border-[#002060]"
+        className="flex overflow-hidden px-5 border-x-2 border-b-2  border-[#002060]"
         style={{
           width: containerWidth,
           height: containerHeight,
         }}
       >
-        <RankBar topHits={topHits}></RankBar>
+        <WinnerBar topHits={topHits}></WinnerBar>
       </div>
     </div>
   );
