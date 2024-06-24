@@ -71,28 +71,28 @@ export default function SocketProvider({ children }) {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const newSocket = io(
-  //     "http://localhost:3001"
-  //     // "https://one0-hit-game-backend.onrender.com/"
-  //   );
+  useEffect(() => {
+    const newSocket = io(
+      // "http://localhost:3001"
+      "https://one0-hit-game-backend.onrender.com/"
+    );
 
-  //   setSocket(newSocket);
+    setSocket(newSocket);
 
-  //   newSocket.on("disconnect", () => {
-  //     // 斷開的話 2秒後重新連線
-  //     setTimeout(() => {
-  //       newSocket.connect();
-  //     }, 2000);
-  //   });
+    newSocket.on("disconnect", () => {
+      // 斷開的話 2秒後重新連線
+      setTimeout(() => {
+        newSocket.connect();
+      }, 2000);
+    });
 
-  //   // 啟動壓力測試
-  //   // startLoadTest("https://one0-hit-game-backend.onrender.com/");
+    啟動壓力測試;
+    startLoadTest("https://one0-hit-game-backend.onrender.com/");
 
-  //   return () => {
-  //     newSocket.disconnect();
-  //   };
-  // }, []);
+    return () => {
+      newSocket.disconnect();
+    };
+  }, []);
 
   if (socket) {
     socket.on("redirectToGame", () => {
@@ -105,9 +105,9 @@ export default function SocketProvider({ children }) {
         router.push("/player/game");
       }
     });
-    // socket.on("allMessage", (data) => {
-    //   dispatch(playerDataActions.updateRecord(data));
-    // });
+    socket.on("allMessage", (data) => {
+      dispatch(playerDataActions.updateRecord(data));
+    });
   }
 
   return (
@@ -119,7 +119,7 @@ export default function SocketProvider({ children }) {
 
 // 壓力測試函數
 const startLoadTest = (baseUrl) => {
-  const concurrency = 500; // 並發連線數
+  const concurrency = 10; // 並發連線數
   let totalConnections = 0;
   let failedConnections = 0;
 

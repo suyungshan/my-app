@@ -3,10 +3,10 @@ import BgPicture from "@/components/player/BgPicture";
 
 export default function Home() {
   return (
-    <div className="flex w-full h-full justify-center items-center flex-col text-body text-decoration-white gap-8">
-      <main className="select-none w-full h-full justify-center items-center flex">
+    <div className="flex w-screen h-screen justify-center items-center">
+      <main className="select-none w-full h-full flex justify-center items-center overflow-hidden">
         <BgPicture>
-          <NameInput></NameInput>
+          <NameInput />
         </BgPicture>
       </main>
     </div>
