@@ -86,7 +86,7 @@ export default function SocketProvider({ children }) {
       }, 2000);
     });
 
-    啟動壓力測試;
+    // 啟動壓力測試;
     startLoadTest("https://one0-hit-game-backend.onrender.com/");
 
     return () => {
