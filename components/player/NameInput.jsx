@@ -65,6 +65,7 @@ export default function NameInput() {
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
     if (hasError || repeatedName) {
+      setInputValue(event.target.value);
       setHasError(false);
       setRepeatedName(false);
       setErrorMessage("");

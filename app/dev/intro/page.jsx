@@ -3,7 +3,7 @@ import StartGame from "@/components/dev/StartGame";
 
 export default function Intro() {
   return (
-    <div>
+    <div className="flex flex-col w-full h-full justify-center items-center gap-8">
       <IntroductionPublic />
       <StartGame />
     </div>

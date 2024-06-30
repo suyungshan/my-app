@@ -1,17 +1,23 @@
 "use client";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function FinalRecord() {
   const name = useSelector((state) => state.playerData.playerData.name);
   const score = useSelector((state) => state.playerData.playerData.score);
 
   return (
-    <div className="flex min-w-[500px] min-h-[300px] justify-center items-center flex-col gap-8 border-2  border-[#002060] rounded-[50px] py-[20px] px-[30px] text-[32px] font-[600] text-[#002060]">
-      <p>最終結果</p>
-      <div className="flex flex-col items-start gap-6">
-        <p className="w-[200px] truncate">暱稱:{name}</p>
-        <p>總得分：{score}</p>
+    <div className="flex w-[calc(100%-40px)] mx-auto h-[600px] justify-between items-center flex-col gap-8 border-2 border-[#002060] rounded-[50px] p-10 text-[32px] font-[600] text-[#002060]">
+      <div className="flex flex-col gap-[4px] justify-center items-center">
+        <p className="text-[54px]">恭喜</p>
+        <p className="text-[36px] w-[260px] line-clamp-2 text-center overflow-hidden">
+          {name || "上天下地唯我獨尊清天天攤天ssfdsdfasdfdsaf"}
+        </p>
+      </div>
+      <div className="flex flex-col gap-[4px] justify-center items-center">
+        <p className="text-[42px]">怒打了</p>
+        <p className="text-[72px]">{score}</p>
+        <p className="text-[72px]">Hit</p>
       </div>
     </div>
   );

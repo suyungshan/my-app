@@ -7,8 +7,8 @@ export default function Pause() {
         <svg
           version="1.0"
           xmlns="http://www.w3.org/2000/svg"
-          width="180.000000pt"
-          height="125.000000pt"
+          width="120pt" // 原本是 180pt, 現在是 2/3
+          height="83.333333pt" // 原本是 125pt, 現在是 2/3
           viewBox="0 0 270.000000 151.000000"
           preserveAspectRatio="xMidYMid meet"
         >

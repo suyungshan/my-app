@@ -4,22 +4,22 @@ import { useSelector, useDispatch } from "react-redux";
 import { SocketContext } from "../fetcher/Socket";
 import { useContext, useEffect, useState, useMemo } from "react";
 import RankBar from "./RankBar";
+import CountDown from "../player/CountDown";
 
 export default function GetData() {
   const { socket } = useContext(SocketContext);
   const [rank, setRank] = useState([]);
   const [containerWidth, setContainerWidth] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
-  const [replay, setReplay] = useState(false);
-  const [countdown, setCountdown] = useState(60); // 初始倒數時間為 60 秒
+  const [countdown, setCountdown] = useState("Ready?");
+  const [gamePhase, setGamePhase] = useState(0); // 0: Ready?, 1: 40秒, 2: 20秒, 3: 30秒, 4: 結束
+  const [pauseAnimation, setPauseAnimation] = useState(false);
   const router = useRouter();
-
-  console.log(rank);
 
   useEffect(() => {
     if (socket) {
       socket.on("allMessage", (data) => {
-        setRank(data.reverse());
+        setRank([...data].reverse());
       });
     }
     if (typeof window !== "undefined") {
@@ -36,30 +36,65 @@ export default function GetData() {
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      if (socket) {
+        socket.off("allMessage");
+      }
     };
   }, [socket]);
 
-  // 使用另一個 useEffect 來設置計時器
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prevCountdown) => {
-        if (prevCountdown === 0) {
-          clearInterval(timer); // 清除計時器
-          router.push("/dev/winner"); // 導向到新的頁面
-          return 0; // 防止倒數計時變成負數
-        }
-        return prevCountdown - 1;
-      });
-    }, 1000); // 每 1 秒鐘更新一次
+    let timer;
+    if (gamePhase === 0) {
+      // "Ready?" 階段
+      timer = setTimeout(() => {
+        setGamePhase(1);
+        setCountdown(60);
+      }, 2000);
+    } else if (gamePhase !== 4) {
+      timer = setInterval(() => {
+        setCountdown((prevCountdown) => {
+          if (prevCountdown === 1) {
+            clearInterval(timer);
+            switch (gamePhase) {
+              case 1:
+                setPauseAnimation(true); // case 1 開始時暫停動畫
+                setGamePhase(2);
+                return 20;
+              case 2:
+                setPauseAnimation(false); // case 2 開始時恢復動畫
+                setGamePhase(3);
+                return 30;
+              case 3:
+                setGamePhase(4);
+                setPauseAnimation(true); // case 2 開始時恢復動畫
+                return 0;
+              default:
+                return prevCountdown;
+            }
+          }
+          return prevCountdown - 1;
+        });
+      }, 1000);
+    }
 
     return () => {
-      clearInterval(timer); // 在組件卸載時清除計時器
+      clearTimeout(timer);
+      clearInterval(timer);
     };
-  }, [router]);
+  }, [gamePhase]);
 
-  // 使用 useMemo 計算 topHits
+  useEffect(() => {
+    if (gamePhase === 4) {
+      setCountdown(0);
+      const redirectTimer = setTimeout(() => {
+        router.push("/dev/winner");
+      }, 3000);
+      return () => clearTimeout(redirectTimer);
+    }
+  }, [gamePhase, router]);
+
   const topHits = useMemo(() => {
-    return rank
+    return [...rank]
       .sort((a, b) => b.score - a.score)
       .slice(0, 10)
       .map((item, index) => ({
@@ -71,7 +106,7 @@ export default function GetData() {
 
   return (
     <div
-      className="flex flex-col overflow-hidden p-5 border-x-2 border-b-2  border-[#002060]"
+      className="flex flex-col overflow-hidden p-5 border-x-2 border-b-2 border-[#002060]"
       style={{
         width: containerWidth,
         height: containerHeight,
@@ -86,7 +121,9 @@ export default function GetData() {
           Time: 60.29
         </p>
       </div>
-      <RankBar topHits={topHits}></RankBar>
+      <RankBar topHits={topHits} pauseAnimation={pauseAnimation} />
+      {gamePhase === 2 && <CountDown countDown={20} text={1} />}
+      {gamePhase === 4 && <CountDown countDown={3} text={2} />}
     </div>
   );
 }

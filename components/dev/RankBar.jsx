@@ -1,26 +1,28 @@
 "use client";
 import { useState, useEffect } from "react";
 
-export default function RankBar(props) {
+export default function RankBar({ topHits, pauseAnimation }) {
   const [rank, setRank] = useState([]);
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    setRank(props.topHits);
-    setIsAnimating(true);
-
-    setTimeout(() => {
-      setIsAnimating(false);
-    }, 4000);
-  }, [props.topHits]);
+    setRank(topHits);
+    if (!pauseAnimation) {
+      setIsAnimating(true);
+      const timer = setTimeout(() => {
+        setIsAnimating(false);
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [topHits, pauseAnimation]);
 
   return (
-    <div className="flex flex-col  w-full h-full p-2 gap-2">
+    <div className="flex flex-col w-full h-full p-2 gap-2">
       {rank.map((item, index) => (
         <div
-          className={`flex w-full  justify-between items-center rounded-md  border-4  border-[#002060] p-[20px] font-[600] text-[#002060] ${
+          className={`flex w-full justify-between items-center rounded-md border-4 border-[#002060] p-[20px] font-[600] text-[#002060] ${
             index <= 2 ? "text-[26px]" : "text-[24px]"
-          }   ${
+          } ${
             index === 0
               ? "bg-[#FFE699]"
               : index === 1
@@ -28,7 +30,7 @@ export default function RankBar(props) {
               : index === 2
               ? "bg-[#FBE5D6]"
               : "bg-decoration-white"
-          }  ${isAnimating ? "stretch-animation" : ""}`}
+          } ${isAnimating && !pauseAnimation ? "stretch-animation" : ""}`}
           key={index}
           style={{ height: "calc(100% / 13)" }}
         >

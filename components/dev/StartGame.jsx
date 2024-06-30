@@ -1,6 +1,7 @@
 "use client";
 import { useContext } from "react";
 import { SocketContext } from "@/components/fetcher/Socket";
+import styles from "./StartGame.module.css";
 
 export default function StartGame() {
   const { socket } = useContext(SocketContext);
@@ -13,8 +14,9 @@ export default function StartGame() {
 
   return (
     <div>
-      <p>開始遊戲</p>
-      <button onClick={start}>Start</button>
+      <button className={styles.startButton} onClick={start}>
+        Start
+      </button>
     </div>
   );
 }

@@ -27,17 +27,35 @@ export default function CountDown(props) {
     };
   }, [props.countDown]);
 
+  const textStyle = {
+    color: "white",
+    fontSize: "72px",
+    textShadow:
+      "0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5)",
+    animation: "float 3s ease-in-out infinite",
+  };
+
   return showShadow ? (
     <Shadow onClick={() => {}}>
-      <div className="text-white text-6xl flex flex-col items-center">
+      {/* <div
+        className="text-white text-[72px] flex flex-col items-center"
+        style={{
+          background: "rgba(0, 0, 0, 0.6)",
+          padding: "20px",
+          borderRadius: "15px",
+        }}
+      > */}
+      <div className="text-white text-[72px] flex flex-col items-center">
         {props.text === 1 ? (
-          <h1>休息一下</h1>
+          <h1 style={textStyle}>休息一下</h1>
         ) : props.text === 2 ? (
           <h1>遊戲結束</h1>
         ) : (
           ""
         )}
-        {(props.text === 0 || props.text === 1) && <h1>{countdown}</h1>}
+        {(props.text === 0 || props.text === 1) && (
+          <h1 style={textStyle}>{countdown}</h1>
+        )}
       </div>
     </Shadow>
   ) : null;

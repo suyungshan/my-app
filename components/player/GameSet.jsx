@@ -26,24 +26,16 @@ export default function GameSet() {
   const router = useRouter();
   const [text, setText] = useState(0);
 
-  const hitBlock = () => {
-    if (socket) {
-      console.log(countdown);
-    } else {
-      console.error("Socket is null");
-    }
-  };
-
   useEffect(() => {
     // 在客戶端渲染時獲取視窗大小
     if (typeof window !== "undefined") {
       setDrumPosition({
-        x: window.innerWidth / 2 - 110,
-        y: window.innerHeight / 2 - 75,
+        x: window.innerWidth / 2 - 73, // 原本是 110, 現在是 2/3
+        y: window.innerHeight / 2 - 50, // 原本是 75, 現在是 2/3
       });
       setPausePosition({
-        x: window.innerWidth / 2 - 25,
-        y: window.innerHeight / 2 - 80,
+        x: window.innerWidth / 2 - 17, // 原本是 25, 現在是 2/3
+        y: window.innerHeight / 2 - 53, // 原本是 80, 現在是 2/3
       });
     }
 
@@ -83,13 +75,13 @@ export default function GameSet() {
   };
 
   const middleSpeed = () => {
-    drumSpeedRef.current.magnitude = 11;
-    pauseSpeedRef.current.magnitude = 11;
+    drumSpeedRef.current.magnitude = 8;
+    pauseSpeedRef.current.magnitude = 8;
   };
 
   const heighestSpeed = () => {
-    drumSpeedRef.current.magnitude = 18;
-    pauseSpeedRef.current.magnitude = 18;
+    drumSpeedRef.current.magnitude = 10;
+    pauseSpeedRef.current.magnitude = 10;
   };
 
   const animate = () => {
@@ -102,18 +94,18 @@ export default function GameSet() {
           prevPos.y +
           drumSpeedRef.current.magnitude * Math.sin(drumSpeedRef.current.angle);
 
-        const headingHeight = document.querySelector("h1").offsetHeight; // 獲取 <h1> 元素的高度
+        const headingHeight = document.querySelector("h1").offsetHeight;
 
-        if (newX < 0 || newX > window.innerWidth - 220) {
-          // 計算碰到視窗邊緣時的反彈角度
+        if (newX < 0 || newX > window.innerWidth - 147) {
+          // 原本是 220, 現在是 2/3
           drumSpeedRef.current.angle =
             Math.PI -
             drumSpeedRef.current.angle +
             ((Math.random() - 0.5) * Math.PI) / 2;
         }
 
-        if (newY < headingHeight - 20 || newY > window.innerHeight - 150) {
-          // 計算碰到視窗頂部或底部時的反彈角度
+        if (newY < headingHeight - 13 || newY > window.innerHeight - 100) {
+          // 原本是 20 和 150, 現在是 2/3
           drumSpeedRef.current.angle =
             -drumSpeedRef.current.angle + ((Math.random() - 0.5) * Math.PI) / 2;
         }
@@ -121,7 +113,6 @@ export default function GameSet() {
         return { x: newX, y: newY };
       });
       setPausePosition((prevPos) => {
-        // 設置不同的移動角度，例如改變 Math.PI 的值
         const newX =
           prevPos.x +
           pauseSpeedRef.current.magnitude *
@@ -131,15 +122,15 @@ export default function GameSet() {
           pauseSpeedRef.current.magnitude *
             Math.sin(pauseSpeedRef.current.angle + Math.PI);
 
-        const headingHeight = document.querySelector("h1").offsetHeight; // 獲取 <h1> 元素的高度
+        const headingHeight = document.querySelector("h1").offsetHeight;
 
-        if (newX < 0 || newX > window.innerWidth - 50) {
-          // 計算碰到視窗邊緣時的反彈角度
+        if (newX < 0 || newX > window.innerWidth - 33) {
+          // 原本是 50, 現在是 2/3
           pauseSpeedRef.current.angle = Math.PI - pauseSpeedRef.current.angle;
         }
 
-        if (newY < headingHeight || newY > window.innerHeight - 120) {
-          // 計算碰到視窗頂部或底部時的反彈角度
+        if (newY < headingHeight || newY > window.innerHeight - 80) {
+          // 原本是 120, 現在是 2/3
           pauseSpeedRef.current.angle = -pauseSpeedRef.current.angle;
         }
 
@@ -162,7 +153,7 @@ export default function GameSet() {
 
       const stopUpdatingTimeout = setTimeout(() => {
         clearInterval(scoreUpdateInterval);
-      }, 30000);
+      }, 120000);
 
       return () => {
         clearInterval(scoreUpdateInterval);
@@ -180,44 +171,43 @@ export default function GameSet() {
       animate();
       clearTimeout(threeTimeout);
     }, 3000);
-
     // 設置 5 秒後自動調整速度
     const twentyTimeout = setTimeout(() => {
       console.log("20");
       updateSpeed(false); // 使用原始速度
       clearTimeout(twentyTimeout);
-    }, 10000);
+    }, 23000);
 
     // 設置 10 秒後自動調整速度（更快）
     const fourtyTimeout = setTimeout(() => {
       console.log("40");
       updateSpeed(true); // 使用更快的速度
       clearTimeout(fourtyTimeout);
-    }, 20000);
+    }, 43000);
 
     // 設置 60 秒後停止動畫和禁用觸發事件
     const sixtyTimeout = setTimeout(() => {
       console.log("60");
       setShouldAnimate(false);
       drumSpeedRef.current.magnitude = 0;
-      controlCountDownShadow(5); //中場休息
+      controlCountDownShadow(20); //中場休息
       setText(1);
       clearTimeout(sixtyTimeout);
-    }, 30000);
+    }, 63000);
 
     const eightyTimeout = setTimeout(() => {
       console.log("80");
       showPause(true);
       middleSpeed(true);
       clearTimeout(eightyTimeout);
-    }, 35000);
+    }, 83000);
 
     const hundredTimeout = setTimeout(() => {
       console.log("100");
       middleSpeed(false);
       heighestSpeed(true);
       clearTimeout(hundredTimeout);
-    }, 40000);
+    }, 103000);
 
     const hundredTenTimeout = setTimeout(() => {
       console.log("110");
@@ -225,8 +215,13 @@ export default function GameSet() {
       drumSpeedRef.current.magnitude = 0;
       pauseSpeedRef.current.magnitude = 0;
       clearTimeout(hundredTenTimeout);
+      controlCountDownShadow(3); //中場休息
+      setText(2);
+    }, 113000);
+
+    const finalTimeout = setTimeout(() => {
       router.push("/player/settlement");
-    }, 45000);
+    }, 116000);
 
     // 清理動畫和 timeout，防止組件卸載時仍然執行
     return () => {
@@ -237,6 +232,7 @@ export default function GameSet() {
       clearTimeout(eightyTimeout);
       clearTimeout(hundredTimeout);
       clearTimeout(hundredTenTimeout);
+      clearTimeout(finalTimeout);
     };
   }, []);
 
@@ -250,7 +246,7 @@ export default function GameSet() {
           目前分數 {count}
         </h1>
         <div
-          className=" flex items-center justify-center w-[220px] h-[150px]"
+          className=" flex items-center justify-center w-[147px] h-[100px]" // 原本是 220px 和 150px, 現在是 2/3
           onClick={plusHandler}
           style={{
             position: "absolute",
@@ -261,7 +257,7 @@ export default function GameSet() {
         </div>
         {pause && (
           <div
-            className="flex items-center justify-center w-[50px] h-[120px] "
+            className="flex items-center justify-center w-[33px] h-[80px] " // 原本是 50px 和 120px, 現在是 2/3
             onClick={disCountHandler}
             style={{
               zIndex: 15,

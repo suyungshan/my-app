@@ -27,8 +27,8 @@ export default function Drum() {
           <svg
             version="1.0"
             xmlns="http://www.w3.org/2000/svg"
-            width="85.000000pt"
-            height="41.000000pt"
+            width="56.666667pt" // 原本是 85pt, 現在是 2/3
+            height="27.333333pt" // 原本是 41pt, 現在是 2/3
             viewBox="0 0 144.000000 41.000000"
             preserveAspectRatio="xMidYMid meet"
           >
@@ -57,8 +57,8 @@ export default function Drum() {
           <svg
             version="1.0"
             xmlns="http://www.w3.org/2000/svg"
-            width="85.000000pt"
-            height="45.000000pt"
+            width="56.666667pt" // 原本是 85pt, 現在是 2/3
+            height="30pt" // 原本是 45pt, 現在是 2/3
             viewBox="0 0 149.000000 45.000000"
             preserveAspectRatio="xMidYMid meet"
           >
@@ -89,8 +89,8 @@ export default function Drum() {
         <svg
           version="1.0"
           xmlns="http://www.w3.org/2000/svg"
-          width="120.000000pt"
-          height="75.000000pt"
+          width="80pt" // 原本是 120pt, 現在是 2/3
+          height="50pt" // 原本是 75pt, 現在是 2/3
           viewBox="0 0 276.000000 158.000000"
           preserveAspectRatio="xMidYMid meet"
         >

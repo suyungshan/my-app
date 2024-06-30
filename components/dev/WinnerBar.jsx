@@ -4,6 +4,7 @@ import Celebrate from "./Celebrate";
 
 export default function WinnerBar(props) {
   const [rank, setRank] = useState([]);
+  console.log(rank);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showCelebration, setShowCelebration] = useState(true); // 新增状态
   const Dammy = [
@@ -15,11 +16,10 @@ export default function WinnerBar(props) {
   ];
 
   useEffect(() => {
-    // setRank(props.topHits);
-    setRank(sortByRank(Dammy));
+    setRank(sortByRank(props.topHits));
     setIsAnimating(true);
 
-    // 在初始渲染时启动五秒庆祝画面
+    // 在初始渲染时启动五秒庆祝画面;
     // const celebrationTimeout = setTimeout(() => {
     //   setShowCelebration(false);
     // }, 10000);
@@ -35,7 +35,6 @@ export default function WinnerBar(props) {
 
   function sortByRank(topHits) {
     const rankOrder = [5, 3, 1, 2, 4];
-
     return topHits.sort((a, b) => {
       const aRankIndex = rankOrder.indexOf(a.rank);
       const bRankIndex = rankOrder.indexOf(b.rank);

@@ -13,10 +13,15 @@ export default function WinnerList() {
 
   useEffect(() => {
     if (socket) {
+      // 在組件掛載時請求初始數據
+      socket.emit("firstConnect");
+
       socket.on("allMessage", (data) => {
-        setRank(data.reverse());
+        // 創建數組的副本並反轉
+        setRank([...data].reverse());
       });
     }
+
     if (typeof window !== "undefined") {
       setContainerWidth(window.innerWidth - 40);
       setContainerHeight(window.innerHeight - 40);
@@ -31,12 +36,15 @@ export default function WinnerList() {
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      if (socket) {
+        socket.off("allMessage");
+      }
     };
   }, [socket]);
 
   // 使用 useMemo 計算 topHits
   const topHits = useMemo(() => {
-    return rank
+    return [...rank]
       .sort((a, b) => b.score - a.score)
       .slice(0, 5)
       .map((item, index) => ({
@@ -52,7 +60,7 @@ export default function WinnerList() {
         <p className="text-[32px] font-[600] text-[#002060]">排行榜</p>
       </div>
       <div
-        className="flex overflow-hidden px-5 border-x-2 border-b-2  border-[#002060]"
+        className="flex overflow-hidden px-5 border-x-2 border-b-2 border-[#002060]"
         style={{
           width: containerWidth,
           height: containerHeight,
