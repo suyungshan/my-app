@@ -156,12 +156,12 @@ export default function GameSet() {
   }, [socket, dispatch, name]);
 
   useEffect(() => {
+    controlCountDownShadow(3);
     const timeouts = [
       {
         time: 3000,
         action: () => {
           animate();
-          controlCountDownShadow(3);
         },
       },
       {
@@ -193,14 +193,14 @@ export default function GameSet() {
         action: () => {
           console.log("80");
           showPause(true);
-          updateSpeed(8);
+          updateSpeed(7);
         },
       },
       {
         time: 103000,
         action: () => {
           console.log("100");
-          updateSpeed(10);
+          updateSpeed(9);
         },
       },
       {
