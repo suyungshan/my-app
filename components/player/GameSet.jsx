@@ -1,4 +1,3 @@
-// GameSet.jsx
 "use client";
 
 import { useState, useEffect, useRef, useContext } from "react";
@@ -26,112 +25,108 @@ export default function GameSet() {
   const router = useRouter();
   const [text, setText] = useState(0);
 
+  const drumWidth = 147;
+  const drumHeight = 100;
+  const pauseWidth = 33;
+  const pauseHeight = 80;
+
   useEffect(() => {
-    // 在客戶端渲染時獲取視窗大小
     if (typeof window !== "undefined") {
       setDrumPosition({
-        x: window.innerWidth / 2 - 73, // 原本是 110, 現在是 2/3
-        y: window.innerHeight / 2 - 50, // 原本是 75, 現在是 2/3
+        x: window.innerWidth / 2 - drumWidth / 2,
+        y: window.innerHeight / 2 - drumHeight / 2,
       });
       setPausePosition({
-        x: window.innerWidth / 2 - 17, // 原本是 25, 現在是 2/3
-        y: window.innerHeight / 2 - 53, // 原本是 80, 現在是 2/3
+        x: window.innerWidth / 2 - pauseWidth / 2,
+        y: window.innerHeight / 2 - pauseHeight / 2,
       });
     }
-
-    // ... (保持其他程式碼不變)
   }, []);
 
   const controlCountDownShadow = (countDownNumber) => {
     setCountdown(countDownNumber);
   };
+
   const plusHandler = () => {
-    const plus = count + 1;
-    setCount(plus);
-    countRef.current = plus;
+    setCount((prevCount) => {
+      const newCount = prevCount + 1;
+      countRef.current = newCount;
+      return newCount;
+    });
   };
+
   const disCountHandler = () => {
-    const disCount = count - 1;
-    setCount(disCount);
-    countRef.current = disCount;
+    setCount((prevCount) => {
+      const newCount = prevCount - 1;
+      countRef.current = newCount;
+      return newCount;
+    });
   };
 
   const drumSpeedRef = useRef({
     magnitude: 0,
-    // angle: Math.random() * 2 * Math.PI, // 隨機方向（0 到 2π）
-    angle: (3 * Math.PI) / 4, //從左下 45 度出發
+    angle: (3 * Math.PI) / 4,
   });
 
   const pauseSpeedRef = useRef({
     magnitude: 0,
-    // angle: Math.random() * 2 * Math.PI, // 隨機方向（0 到 2π）
     angle: (2 * Math.PI) / 3,
   });
 
-  const updateSpeed = (isFaster) => {
-    const speedSize = isFaster ? 6 : 3; // 根據條件決定速度大小
-    drumSpeedRef.current.magnitude = speedSize;
-    pauseSpeedRef.current.magnitude = speedSize;
+  const updateSpeed = (speed) => {
+    drumSpeedRef.current.magnitude = speed;
+    pauseSpeedRef.current.magnitude = speed;
   };
 
-  const middleSpeed = () => {
-    drumSpeedRef.current.magnitude = 8;
-    pauseSpeedRef.current.magnitude = 8;
-  };
-
-  const heighestSpeed = () => {
-    drumSpeedRef.current.magnitude = 10;
-    pauseSpeedRef.current.magnitude = 10;
-  };
-
-  const animate = () => {
+  const animate = (timestamp) => {
     if (shouldAnimate) {
+      const headingHeight = document.querySelector("h1").offsetHeight;
+
       setDrumPosition((prevPos) => {
-        const newX =
+        let newX =
           prevPos.x +
           drumSpeedRef.current.magnitude * Math.cos(drumSpeedRef.current.angle);
-        const newY =
+        let newY =
           prevPos.y +
           drumSpeedRef.current.magnitude * Math.sin(drumSpeedRef.current.angle);
 
-        const headingHeight = document.querySelector("h1").offsetHeight;
-
-        if (newX < 0 || newX > window.innerWidth - 147) {
-          // 原本是 220, 現在是 2/3
-          drumSpeedRef.current.angle =
-            Math.PI -
-            drumSpeedRef.current.angle +
-            ((Math.random() - 0.5) * Math.PI) / 2;
+        if (newX < 0 || newX > window.innerWidth - drumWidth) {
+          drumSpeedRef.current.angle = Math.PI - drumSpeedRef.current.angle;
+          newX = Math.max(0, Math.min(newX, window.innerWidth - drumWidth));
         }
 
-        if (newY < headingHeight - 13 || newY > window.innerHeight - 100) {
-          // 原本是 20 和 150, 現在是 2/3
-          drumSpeedRef.current.angle =
-            -drumSpeedRef.current.angle + ((Math.random() - 0.5) * Math.PI) / 2;
+        if (newY < headingHeight || newY > window.innerHeight - drumHeight) {
+          drumSpeedRef.current.angle = -drumSpeedRef.current.angle;
+          newY = Math.max(
+            headingHeight,
+            Math.min(newY, window.innerHeight - drumHeight)
+          );
         }
 
         return { x: newX, y: newY };
       });
+
       setPausePosition((prevPos) => {
-        const newX =
+        let newX =
           prevPos.x +
           pauseSpeedRef.current.magnitude *
-            Math.cos(pauseSpeedRef.current.angle + Math.PI);
-        const newY =
+            Math.cos(pauseSpeedRef.current.angle);
+        let newY =
           prevPos.y +
           pauseSpeedRef.current.magnitude *
-            Math.sin(pauseSpeedRef.current.angle + Math.PI);
+            Math.sin(pauseSpeedRef.current.angle);
 
-        const headingHeight = document.querySelector("h1").offsetHeight;
-
-        if (newX < 0 || newX > window.innerWidth - 33) {
-          // 原本是 50, 現在是 2/3
+        if (newX < 0 || newX > window.innerWidth - pauseWidth) {
           pauseSpeedRef.current.angle = Math.PI - pauseSpeedRef.current.angle;
+          newX = Math.max(0, Math.min(newX, window.innerWidth - pauseWidth));
         }
 
-        if (newY < headingHeight || newY > window.innerHeight - 80) {
-          // 原本是 120, 現在是 2/3
+        if (newY < headingHeight || newY > window.innerHeight - pauseHeight) {
           pauseSpeedRef.current.angle = -pauseSpeedRef.current.angle;
+          newY = Math.max(
+            headingHeight,
+            Math.min(newY, window.innerHeight - pauseHeight)
+          );
         }
 
         return { x: newX, y: newY };
@@ -143,9 +138,7 @@ export default function GameSet() {
 
   useEffect(() => {
     if (socket) {
-      //每五秒自動獲取點擊數據
       const scoreUpdateInterval = setInterval(() => {
-        console.log(countRef.current); // 使用 ref 取得最新的 count 值
         const currentCount = countRef.current;
         dispatch(playerDataActions.updateScore(currentCount));
         socket.emit("hit", { name: name, score: currentCount });
@@ -159,94 +152,93 @@ export default function GameSet() {
         clearInterval(scoreUpdateInterval);
         clearTimeout(stopUpdatingTimeout);
       };
-    } else {
-      return;
     }
-  }, [socket]);
+  }, [socket, dispatch, name]);
 
   useEffect(() => {
-    controlCountDownShadow(3);
-    // 開始動畫
-    const threeTimeout = setTimeout(() => {
-      animate();
-      clearTimeout(threeTimeout);
-    }, 3000);
-    // 設置 5 秒後自動調整速度
-    const twentyTimeout = setTimeout(() => {
-      console.log("20");
-      updateSpeed(false); // 使用原始速度
-      clearTimeout(twentyTimeout);
-    }, 23000);
+    const timeouts = [
+      {
+        time: 3000,
+        action: () => {
+          animate();
+          controlCountDownShadow(3);
+        },
+      },
+      {
+        time: 23000,
+        action: () => {
+          console.log("20");
+          updateSpeed(3);
+        },
+      },
+      {
+        time: 43000,
+        action: () => {
+          console.log("40");
+          updateSpeed(6);
+        },
+      },
+      {
+        time: 63000,
+        action: () => {
+          console.log("60");
+          setShouldAnimate(false);
+          updateSpeed(0);
+          controlCountDownShadow(20);
+          setText(1);
+        },
+      },
+      {
+        time: 83000,
+        action: () => {
+          console.log("80");
+          showPause(true);
+          updateSpeed(8);
+        },
+      },
+      {
+        time: 103000,
+        action: () => {
+          console.log("100");
+          updateSpeed(10);
+        },
+      },
+      {
+        time: 113000,
+        action: () => {
+          console.log("110");
+          setShouldAnimate(false);
+          updateSpeed(0);
+          controlCountDownShadow(3);
+          setText(2);
+        },
+      },
+      {
+        time: 116000,
+        action: () => {
+          router.push("/player/settlement");
+        },
+      },
+    ];
 
-    // 設置 10 秒後自動調整速度（更快）
-    const fourtyTimeout = setTimeout(() => {
-      console.log("40");
-      updateSpeed(true); // 使用更快的速度
-      clearTimeout(fourtyTimeout);
-    }, 43000);
+    const timeoutIds = timeouts.map(({ time, action }) =>
+      setTimeout(action, time)
+    );
 
-    // 設置 60 秒後停止動畫和禁用觸發事件
-    const sixtyTimeout = setTimeout(() => {
-      console.log("60");
-      setShouldAnimate(false);
-      drumSpeedRef.current.magnitude = 0;
-      controlCountDownShadow(20); //中場休息
-      setText(1);
-      clearTimeout(sixtyTimeout);
-    }, 63000);
-
-    const eightyTimeout = setTimeout(() => {
-      console.log("80");
-      showPause(true);
-      middleSpeed(true);
-      clearTimeout(eightyTimeout);
-    }, 83000);
-
-    const hundredTimeout = setTimeout(() => {
-      console.log("100");
-      middleSpeed(false);
-      heighestSpeed(true);
-      clearTimeout(hundredTimeout);
-    }, 103000);
-
-    const hundredTenTimeout = setTimeout(() => {
-      console.log("110");
-      setShouldAnimate(false);
-      drumSpeedRef.current.magnitude = 0;
-      pauseSpeedRef.current.magnitude = 0;
-      clearTimeout(hundredTenTimeout);
-      controlCountDownShadow(3); //中場休息
-      setText(2);
-    }, 113000);
-
-    const finalTimeout = setTimeout(() => {
-      router.push("/player/settlement");
-    }, 116000);
-
-    // 清理動畫和 timeout，防止組件卸載時仍然執行
-    return () => {
-      clearTimeout(threeTimeout);
-      clearTimeout(twentyTimeout);
-      clearTimeout(fourtyTimeout);
-      clearTimeout(sixtyTimeout);
-      clearTimeout(eightyTimeout);
-      clearTimeout(hundredTimeout);
-      clearTimeout(hundredTenTimeout);
-      clearTimeout(finalTimeout);
-    };
-  }, []);
+    return () => timeoutIds.forEach(clearTimeout);
+  }, [router]);
 
   return (
     <>
       <div className="select-none text-[150px] font-[600] text-[#002060]">
         <CountDown countDown={countdown} text={text}></CountDown>
       </div>
-      <div className="  flex flex-col w-full h-full overflow-hidden relative select-none">
-        <h1 className="w-full text-center py-4 border-b-2  border-[#002060] text-[36px] font-[600] text-[#002060]">
+      <div className="flex flex-col w-full h-full overflow-hidden relative select-none">
+        <h1 className="w-full text-center py-4 border-b-2 border-[#002060] text-[36px] font-[600] text-[#002060]">
           目前分數 {count}
         </h1>
         <div
-          className=" flex items-center justify-center w-[147px] h-[100px]" // 原本是 220px 和 150px, 現在是 2/3
+          className="flex items-center justify-center w-[147px] h-[100px]"
           onClick={plusHandler}
           style={{
             position: "absolute",
@@ -257,7 +249,7 @@ export default function GameSet() {
         </div>
         {pause && (
           <div
-            className="flex items-center justify-center w-[33px] h-[80px] " // 原本是 50px 和 120px, 現在是 2/3
+            className="flex items-center justify-center w-[33px] h-[80px]"
             onClick={disCountHandler}
             style={{
               zIndex: 15,

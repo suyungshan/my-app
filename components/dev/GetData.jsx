@@ -49,7 +49,7 @@ export default function GetData() {
       timer = setTimeout(() => {
         setGamePhase(1);
         setCountdown(60);
-      }, 2000);
+      }, 3000);
     } else if (gamePhase !== 4) {
       timer = setInterval(() => {
         setCountdown((prevCountdown) => {

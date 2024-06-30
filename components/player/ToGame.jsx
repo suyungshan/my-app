@@ -1,30 +1,30 @@
-"use client";
+// "use client";
 
-import { useEffect } from "react";
-import io from "socket.io-client";
-import { useRouter } from "next/navigation";
+// import { useEffect } from "react";
+// import io from "socket.io-client";
+// import { useRouter } from "next/navigation";
 
-const socket = io("http://localhost:3001/");
+// const socket = io("https://one0-hit-game-backend.onrender.com/");
 
-export default function ToGame() {
-  const router = useRouter();
+// export default function ToGame() {
+//   const router = useRouter();
 
-  useEffect(() => {
-    socket.emit("sendMessage", {
-      name: "majer",
-      message: "hello everyone",
-    });
+//   useEffect(() => {
+//     socket.emit("sendMessage", {
+//       name: "majer",
+//       message: "hello everyone",
+//     });
 
-    socket.off("allMessage");
+//     socket.off("allMessage");
 
-    socket.on("allMessage", (message) => {
-      console.log(message);
-    });
-  }, []);
+//     socket.on("allMessage", (message) => {
+//       console.log(message);
+//     });
+//   }, []);
 
-  socket.on("redirectToGame", () => {
-    router.push("/player/game");
-  });
+//   socket.on("redirectToGame", () => {
+//     router.push("/player/game");
+//   });
 
-  return;
-}
+//   return;
+// }

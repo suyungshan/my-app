@@ -1,4 +1,3 @@
-import ToGame from "@/components/player/ToGame";
 import Introduction from "@/components/player/Introduction";
 
 export default function Directions() {
