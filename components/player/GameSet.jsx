@@ -25,8 +25,8 @@ export default function GameSet() {
   const router = useRouter();
   const [text, setText] = useState(0);
 
-  const drumWidth = 147;
-  const drumHeight = 100;
+  const drumWidth = 200;
+  const drumHeight = 180;
   const pauseWidth = 33;
   const pauseHeight = 80;
 
@@ -238,7 +238,7 @@ export default function GameSet() {
           目前分數 {count}
         </h1>
         <div
-          className="flex items-center justify-center w-[147px] h-[100px]"
+          className="flex items-center justify-center w-[200px] h-[180px] border"
           onClick={plusHandler}
           style={{
             position: "absolute",

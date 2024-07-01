@@ -17,7 +17,12 @@ export default function Drum() {
   };
 
   return (
-    <div className="flex w-full h-full flex-col items-center justify-center">
+    <div
+      className="flex w-full h-full flex-col items-center justify-center"
+      onClick={() => {
+        setTap(!tap);
+      }}
+    >
       <div className="flex ">
         <motion.div
           className="z-0"
@@ -80,12 +85,7 @@ export default function Drum() {
           </svg>
         </motion.div>
       </div>
-      <motion.div
-        className="z-10"
-        onClick={() => {
-          setTap(!tap);
-        }}
-      >
+      <motion.div className="z-10">
         <svg
           version="1.0"
           xmlns="http://www.w3.org/2000/svg"
