@@ -18,7 +18,6 @@
 //     socket.off("allMessage");
 
 //     socket.on("allMessage", (message) => {
-//       console.log(message);
 //     });
 //   }, []);
 

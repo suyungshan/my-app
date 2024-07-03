@@ -90,16 +90,22 @@ export default function GameSet() {
           prevPos.y +
           drumSpeedRef.current.magnitude * Math.sin(drumSpeedRef.current.angle);
 
-        if (newX < 0 || newX > window.innerWidth - drumWidth) {
+        if (newX < -35 || newX > window.innerWidth - drumWidth + 35) {
           drumSpeedRef.current.angle = Math.PI - drumSpeedRef.current.angle;
-          newX = Math.max(0, Math.min(newX, window.innerWidth - drumWidth));
+          newX = Math.max(
+            -35,
+            Math.min(newX, window.innerWidth - drumWidth + 35)
+          );
         }
 
-        if (newY < headingHeight || newY > window.innerHeight - drumHeight) {
+        if (
+          newY < headingHeight - 50 ||
+          newY > window.innerHeight - drumHeight + 50
+        ) {
           drumSpeedRef.current.angle = -drumSpeedRef.current.angle;
           newY = Math.max(
-            headingHeight,
-            Math.min(newY, window.innerHeight - drumHeight)
+            headingHeight - 50,
+            Math.min(newY, window.innerHeight - drumHeight + 50)
           );
         }
 
@@ -238,7 +244,7 @@ export default function GameSet() {
           目前分數 {count}
         </h1>
         <div
-          className="flex items-center justify-center w-[200px] h-[180px] border"
+          className="flex items-center justify-center w-[200px] h-[180px]"
           onClick={plusHandler}
           style={{
             position: "absolute",

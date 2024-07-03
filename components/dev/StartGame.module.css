@@ -2,14 +2,15 @@
   background-color: transparent;
   color: #002060;
   padding: 30px 30px;
-  font-size: 25px;
+  font-size: 35px;
+  font-weight: 600;
   border-radius: 30px;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   animation: float 2s ease-in-out infinite;
-  width: 200px;
-  height: 80px;
+  width: 600px;
+  height: 90px;
   border: 2px solid #002060;
   display: flex;
   justify-content: center;

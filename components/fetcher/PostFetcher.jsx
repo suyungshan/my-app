@@ -1,6 +1,5 @@
 const PostFetcher = async (postApiUrls, postData) => {
   const promises = postApiUrls.map(async (url) => {
-    console.log(postData);
     const response = await fetch(url, {
       method: "POST",
       headers: {
@@ -12,7 +11,6 @@ const PostFetcher = async (postApiUrls, postData) => {
     });
 
     const result = await response.json();
-    console.log(result);
     return result;
   });
 

@@ -4,7 +4,6 @@ import Celebrate from "./Celebrate";
 
 export default function WinnerBar(props) {
   const [rank, setRank] = useState([]);
-  console.log(rank);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showCelebration, setShowCelebration] = useState(true); // 新增状态
   const Dammy = [

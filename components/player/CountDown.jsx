@@ -11,7 +11,6 @@ export default function CountDown(props) {
     setShowShadow(true);
     const countdownInterval = setInterval(() => {
       setCountdown((prevCount) => {
-        // console.log(prevCount);
         return prevCount - 1;
       });
     }, 1000);

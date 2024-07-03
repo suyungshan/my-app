@@ -28,6 +28,7 @@ export default function Drum() {
           className="z-0"
           variants={topVariants}
           animate={tap ? "clicked" : "unclicked"}
+          style={{ transformOrigin: "left" }}
         >
           <svg
             version="1.0"
@@ -58,6 +59,7 @@ export default function Drum() {
           className="z-0"
           variants={bottomVariants}
           animate={tap ? "clicked" : "unclicked"}
+          style={{ transformOrigin: "right" }}
         >
           <svg
             version="1.0"

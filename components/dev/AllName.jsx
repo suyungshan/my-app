@@ -26,7 +26,6 @@ export default function AllName() {
             return item;
           }
         });
-        console.log(newData);
         setNames(newData);
       });
     }
