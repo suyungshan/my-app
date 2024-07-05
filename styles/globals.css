@@ -37,9 +37,15 @@
     );
   }
 }
-input {
-  font-size: 2vw;
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+  select,
+  textarea,
+  input {
+    font-size: 54px;
+  }
 }
+
 .home {
   @apply bg-info-dark;
 }
