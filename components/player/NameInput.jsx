@@ -100,7 +100,7 @@ export default function NameInput() {
             onFocus={handleInputFocus}
             className={`
               w-full h-full px-[3%] py-[2%] rounded-[3vw]
-              text-[2vw] bg-[#f0f0f0]
+               bg-[#f0f0f0]
               ${
                 hasError || repeatedName
                   ? "text-red-500 placeholder-red-500"
