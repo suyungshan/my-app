@@ -55,7 +55,7 @@ export default function WinnerBar(props) {
       {showCelebration && <Celebrate />}
       {rank.map((item, index) => (
         <div
-          className={`flex  flex-col w-[200px] justify-between items-center rounded-md border-4 border-[#002060] p-[20px] font-[600] text-[#002060] ${
+          className={`flex flex-col w-[200px] justify-between items-center rounded-md border-4 border-[#002060] p-[20px] font-[600] text-[#002060] ${
             index <= 2 ? "text-[26px]" : "text-[24px]"
           } ${
             index === 2
@@ -74,21 +74,28 @@ export default function WinnerBar(props) {
             <p className="text-center text-[60px]">{`${item.rank}`}</p>
             <div
               className={`relative ${
-                index <= 2 ? "w-[120px] h-[120px]" : "w-[100px] h-[100px]"
+                item.rank <= 3 ? "w-[140px] h-[120px]" : "w-[140px] h-[120px]"
               }`}
             >
               <div
-                className={`absolute inset-0 rounded-full border-4 border-[#002060] ${
-                  index <= 2 ? "p-4" : "p-2"
+                className={`absolute inset-0 border-4 border-[#002060] ${
+                  item.rank <= 3 ? "p-4" : "p-2"
                 }`}
               ></div>
               <p
-                className="absolute text-center text-[#002060] truncate p-4"
+                className="absolute text-center text-[#002060] px-1 overflow-hidden"
                 style={{
                   top: "50%",
                   left: 0,
                   right: 0,
                   transform: "translateY(-50%)",
+                  display: "-webkit-box",
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: "vertical",
+                  wordBreak: "break-word",
+                  fontSize: item.rank <= 3 ? "24px" : "20px",
+                  lineHeight: "1.2em",
+                  maxHeight: "2.4em",
                 }}
               >
                 {item.name}

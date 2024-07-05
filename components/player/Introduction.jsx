@@ -6,7 +6,7 @@ export default function Introduction() {
   const name = useSelector((state) => state.playerData.playerData.name);
 
   return (
-    <div className="flex w-[calc(100%-40px)] mx-auto justify-center items-center flex-col gap-8 border-2  border-[#002060] rounded-[50px] pt-[25px] py-[50px] px-[20px] text-[32px] font-[600] text-[#002060]">
+    <div className="flex w-[calc(100%-40px)] mx-auto justify-center items-center flex-col gap-8 border-2  border-[#002060] rounded-[50px] pt-[25px] py-[50px] px-[45px] text-[32px] font-[600] text-[#002060] ">
       <p className="w-[300px] text-center truncate">ID: {name}</p>
       <p>遊戲準備中</p>
       <div className="text-center text-[24px] flex flex-col items-start gap-3 ">
