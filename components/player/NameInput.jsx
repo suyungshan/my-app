@@ -119,13 +119,13 @@ export default function NameInput() {
                   : "2px solid #800080",
             }}
           />
-          <div
-            className="absolute inset-0 pointer-events-none rounded-[3vw]"
+          {/* <div
+            className="absolute inset-0 pointer-events-none rounded-[3vw] border"
             style={{
               boxShadow: "inset 0 2px 4px 0 rgba(0, 0, 0, 0.1)",
               zIndex: 10,
             }}
-          ></div>
+          ></div> */}
         </div>
         <button
           type="submit"

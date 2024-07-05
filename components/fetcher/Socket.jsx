@@ -40,10 +40,23 @@ export default function SocketProvider({ children }) {
       socketRef.current.on("disconnect", () => {
         console.log("斷開連接");
         isConnected.current = false;
-        // 2秒後嘗試重新連接
-        setTimeout(() => {
-          socketRef.current.connect();
-        }, 2000);
+        if (!maxConnectionsReached.current && !maxDataReached.current) {
+          setTimeout(() => {
+            socketRef.current.connect();
+          }, 2000);
+        }
+      });
+
+      socketRef.current.on("maxConnectionsReached", () => {
+        console.log("達到最大連接數，停止重新連接");
+        maxConnectionsReached.current = true;
+        socketRef.current.disconnect();
+      });
+
+      socketRef.current.on("maxDataReached", () => {
+        console.log("達到最大數參加遊戲數量，停止重新連接");
+        maxDataReached.current = true;
+        socketRef.current.disconnect();
       });
     }
 

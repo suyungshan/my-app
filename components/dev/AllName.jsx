@@ -101,15 +101,16 @@ export default function AllName() {
   };
 
   return (
-    <div className="flex flex-col items-center h-[100vh] py-2">
+    <div className="flex flex-col items-center h-[100vh] py-2 gap-2">
       <div
         className="text-center justify-center bg-none text-[32px] font-[600] text-[#002060] truncate "
+        style={{ color: "transparent" }}
         onClick={turnToIntro}
       >
-        已加入玩家：{names.length}
+        加入遊戲
       </div>
       <div
-        className="flex flex-col items-center overflow-y-hidden overflow-x-hidden border-x-2 border-b-2 border-[#002060] gap-8"
+        className="flex flex-col items-center overflow-y-hidden overflow-x-hidden border-x-2 border-b-2 border-[#002060] gap-8 py-3"
         style={{
           width: containerWidth,
           height: containerHeight,
