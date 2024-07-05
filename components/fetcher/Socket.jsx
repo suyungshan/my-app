@@ -60,8 +60,10 @@ export default function SocketProvider({ children }) {
       socket.on("redirectToGame", () => {
         if (window.location.pathname === "/dev/intro") {
           window.location.href = "/dev/rank";
-        } else {
+        } else if (window.location.pathname === "/player/instructions") {
           router.push("/player/game");
+        } else {
+          return;
         }
       });
 
