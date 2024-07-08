@@ -51,11 +51,11 @@ export default function WinnerBar(props) {
   }
 
   return (
-    <div className="flex w-full gap-2 h-full px-2 relative justify-center items-end">
+    <div className="flex w-full gap-6 h-full px-2 relative justify-center items-end">
       {showCelebration && <Celebrate />}
       {rank.map((item, index) => (
         <div
-          className={`flex flex-col w-[200px] justify-between items-center rounded-md border-4 border-[#002060] p-[20px] font-[600] text-[#002060] ${
+          className={`flex flex-col w-[250px] justify-between items-center rounded-t-md border-4 border-[#002060] p-[20px] font-[600] text-[#002060] ${
             index <= 2 ? "text-[26px]" : "text-[24px]"
           } ${
             index === 2
@@ -70,11 +70,11 @@ export default function WinnerBar(props) {
           } ${isAnimating ? "winner-animation" : ""}`}
           key={index}
         >
-          <div className="flex gap-1 flex-col items-center">
+          <div className="flex gap-5 flex-col items-center">
             <p className="text-center text-[60px]">{`${item.rank}`}</p>
             <div
               className={`relative ${
-                item.rank <= 3 ? "w-[140px] h-[120px]" : "w-[140px] h-[120px]"
+                item.rank <= 3 ? "w-[200px] h-[120px]" : "w-[200px] h-[120px]"
               }`}
             >
               <div
@@ -83,7 +83,7 @@ export default function WinnerBar(props) {
                 }`}
               ></div>
               <p
-                className="absolute text-center text-[#002060] px-1 overflow-hidden"
+                className="absolute text-center text-[#002060] px-3 overflow-hidden"
                 style={{
                   top: "50%",
                   left: 0,

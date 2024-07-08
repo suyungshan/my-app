@@ -88,7 +88,7 @@ export default function GetData() {
       setCountdown(0);
       const redirectTimer = setTimeout(() => {
         router.push("/dev/winner");
-      }, 3000);
+      }, 10000);
       return () => clearTimeout(redirectTimer);
     }
   }, [gamePhase, router]);

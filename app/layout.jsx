@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
       </head>
       <StoreProvider>
         <SocketProvider>
-          <body className="flex items-center justify-center ">{children}</body>
+          <body className="flex items-center justify-center">{children}</body>
         </SocketProvider>
       </StoreProvider>
     </html>

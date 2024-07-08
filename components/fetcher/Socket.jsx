@@ -1,7 +1,7 @@
 "use client";
-import { createContext, useState, useEffect, useRef } from "react";
+import { createContext, useState, useEffect, useRef, useCallback } from "react";
 import io from "socket.io-client";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { playerDataActions } from "@/store/playerData";
 
@@ -10,13 +10,17 @@ export const SocketContext = createContext(null);
 export default function SocketProvider({ children }) {
   const [socket, setSocket] = useState(null);
   const router = useRouter();
+  const pathname = usePathname();
+
   const dispatch = useDispatch();
   const isConnected = useRef(false);
   const hasRunTest = useRef(false);
   const socketRef = useRef(null);
+  const maxConnectionsReached = useRef(false);
+  const maxDataReached = useRef(false);
 
-  useEffect(() => {
-    if (!isConnected.current) {
+  const initializeSocket = useCallback(() => {
+    if (!isConnected.current && pathname !== "/") {
       if (!hasRunTest.current) {
         // startLoadTest("http://localhost:3001");
         // startLoadTest("https://one0-hit-game-backend.onrender.com/");
@@ -40,7 +44,11 @@ export default function SocketProvider({ children }) {
       socketRef.current.on("disconnect", () => {
         console.log("斷開連接");
         isConnected.current = false;
-        if (!maxConnectionsReached.current && !maxDataReached.current) {
+        if (
+          pathname !== "/winner" &&
+          !maxConnectionsReached.current &&
+          !maxDataReached.current
+        ) {
           setTimeout(() => {
             socketRef.current.connect();
           }, 2000);
@@ -66,17 +74,20 @@ export default function SocketProvider({ children }) {
         isConnected.current = false;
       }
     };
-  }, []); // 空依賴數組，確保只執行一次
+  }, [pathname]); // 空依賴數組，確保只執行一次
 
   useEffect(() => {
-    if (socket) {
+    const cleanup = initializeSocket();
+    return cleanup;
+  }, [initializeSocket]);
+
+  useEffect(() => {
+    if (socket && (pathname !== "/" || pathname !== "/player/enterName")) {
       socket.on("redirectToGame", () => {
-        if (window.location.pathname === "/dev/intro") {
-          window.location.href = "/dev/rank";
-        } else if (window.location.pathname === "/player/instructions") {
+        if (pathname === "/dev/intro") {
+          router.push("/dev/rank");
+        } else if (pathname === "/player/instructions") {
           router.push("/player/game");
-        } else {
-          return;
         }
       });
 
@@ -84,7 +95,11 @@ export default function SocketProvider({ children }) {
         dispatch(playerDataActions.updateRecord(data));
       });
     }
-  }, [socket, router, dispatch]);
+  }, [socket, pathname, router, dispatch]);
+
+  if (pathname === "/") {
+    return <>{children}</>;
+  }
 
   return (
     <SocketContext.Provider value={{ socket }}>

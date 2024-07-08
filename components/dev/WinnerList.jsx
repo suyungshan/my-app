@@ -2,26 +2,17 @@
 import { useRouter } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { SocketContext } from "../fetcher/Socket";
-import { useContext, useEffect, useState, useMemo } from "react";
+import { useContext, useEffect, useState, useMemo, useRef } from "react";
 import WinnerBar from "./WinnerBar";
 
 export default function WinnerList() {
-  const { socket } = useContext(SocketContext);
+  const { socket, setShouldReconnect } = useContext(SocketContext);
   const [rank, setRank] = useState([]);
   const [containerWidth, setContainerWidth] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
+  const initializedRef = useRef(false);
 
   useEffect(() => {
-    if (socket) {
-      // 在組件掛載時請求初始數據
-      socket.emit("firstConnect");
-
-      socket.on("allMessage", (data) => {
-        // 創建數組的副本並反轉
-        setRank([...data].reverse());
-      });
-    }
-
     if (typeof window !== "undefined") {
       setContainerWidth(window.innerWidth - 40);
       setContainerHeight(window.innerHeight - 40);
@@ -36,12 +27,37 @@ export default function WinnerList() {
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      if (socket) {
-        socket.off("allMessage");
-      }
     };
-  }, [socket]);
+  }, []);
 
+  useEffect(() => {
+    if (socket && !initializedRef.current) {
+      initializedRef.current = true;
+
+      // 只在首次執行時發送 "firstConnect"
+      socket.emit("firstConnect");
+
+      // 設置一次性監聽器
+      const handleAllMessage = (data) => {
+        setRank([...data].reverse());
+        // 接收到數據後立即移除監聽器
+        socket.off("allMessage", handleAllMessage);
+      };
+
+      socket.on("allMessage", handleAllMessage);
+    }
+
+    // 設置計時器，5 秒後斷開連線
+    const timer = setTimeout(() => {
+      socket.disconnect();
+    }, 5000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+
+    // 不需要清理函數，因為監聽器只會執行一次
+  }, [socket]);
   // 使用 useMemo 計算 topHits
   const topHits = useMemo(() => {
     return [...rank]
@@ -55,7 +71,7 @@ export default function WinnerList() {
   }, [rank]);
 
   return (
-    <div className="flex flex-col items-center h-[100vh] p-2">
+    <div className="flex flex-col items-center h-[100vh] p-2 gap-8">
       <div className="flex justify-center items-baseline">
         <p className="text-[32px] font-[600] text-[#002060]">排行榜</p>
       </div>

@@ -55,7 +55,7 @@ export default function AllName() {
   let currentRow = []; // 當前行
   let maxRowHeight = 0; // 最高行的高度
 
-  names.slice(0, 20).forEach((item, index) => {
+  names.slice(0, 88).forEach((item, index) => {
     const box = (
       <div
         key={`${item.name}-${item.isNew}`} // 使用名字和 isNew 屬性作為 key
@@ -103,11 +103,11 @@ export default function AllName() {
   return (
     <div className="flex flex-col items-center h-[100vh] py-2 gap-2">
       <div
-        className="text-center justify-center bg-none text-[32px] font-[600] text-[#002060] truncate "
-        style={{ color: "transparent" }}
+        className="w-full text-center justify-center bg-none text-[32px] font-[600] text-[#002060] truncate"
+        // style={{ color: "transparent" }}
         onClick={turnToIntro}
       >
-        加入遊戲
+        2920
       </div>
       <div
         className="flex flex-col items-center overflow-y-hidden overflow-x-hidden border-x-2 border-b-2 border-[#002060] gap-8 py-3"
