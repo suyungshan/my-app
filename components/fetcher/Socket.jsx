@@ -23,7 +23,7 @@ export default function SocketProvider({ children }) {
     if (!isConnected.current && pathname !== "/") {
       if (!hasRunTest.current) {
         // startLoadTest("http://localhost:3001");
-        startLoadTest("https://one0-hit-game-backend.onrender.com/");
+        // startLoadTest("https://one0-hit-game-backend.onrender.com/");
         hasRunTest.current = true;
       }
 
