@@ -110,7 +110,7 @@ export default function SocketProvider({ children }) {
 
 // 壓力測試函數
 const startLoadTest = (baseUrl) => {
-  const concurrency = 200; // 並發連線數，增加到15以測試超過限制的情況
+  const concurrency = 300; // 並發連線數，增加到15以測試超過限制的情況
   let totalConnections = 0;
   let failedConnections = 0;
 
