@@ -23,7 +23,7 @@ export default function SocketProvider({ children }) {
     if (!isConnected.current && pathname !== "/") {
       if (!hasRunTest.current) {
         // startLoadTest("http://localhost:3001");
-        // startLoadTest("https://one0-hit-game-backend.onrender.com/");
+        startLoadTest("https://one0-hit-game-backend.onrender.com/");
         hasRunTest.current = true;
       }
 
@@ -110,7 +110,7 @@ export default function SocketProvider({ children }) {
 
 // 壓力測試函數
 const startLoadTest = (baseUrl) => {
-  const concurrency = 10; // 並發連線數，增加到15以測試超過限制的情況
+  const concurrency = 400; // 並發連線數，增加到15以測試超過限制的情況
   let totalConnections = 0;
   let failedConnections = 0;
 
