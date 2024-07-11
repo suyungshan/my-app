@@ -107,7 +107,7 @@ export default function AllName() {
         // style={{ color: "transparent" }}
         onClick={turnToIntro}
       >
-        2920
+        0807
       </div>
       <div
         className="flex flex-col items-center overflow-y-hidden overflow-x-hidden border-x-2 border-b-2 border-[#002060] gap-8 py-3"
