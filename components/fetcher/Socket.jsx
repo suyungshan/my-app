@@ -45,8 +45,8 @@ export default function SocketProvider({ children }) {
         console.log("斷開連接");
         isConnected.current = false;
         if (
-          pathname !== "/winner" &&
-          !maxConnectionsReached.current &&
+          pathname !== "/winner" ||
+          !maxConnectionsReached.current ||
           !maxDataReached.current
         ) {
           setTimeout(() => {
