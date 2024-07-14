@@ -75,7 +75,7 @@ export default function Login() {
         </div>
         <button
           type="submit"
-          className="border-2 w-[40%] h-[7%] px-[8%] border-[#fff]  bg-[#f0f0f0a3] text-[4vw] font-[500] text-white rounded-[3vw] py-[1%]"
+          className="border-2 w-[40%] h-[7%] px-[8%] border-[#fff]  bg-[#f0f0f0a3] text-[130%] font-[500] text-white rounded-[3vw] py-[1%]"
           style={{
             color: "black",
             // 微透明的背景

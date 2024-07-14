@@ -1,27 +1,20 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useSelector, useDispatch } from "react-redux";
-import { SocketContext } from "../fetcher/Socket";
-import { useContext, useEffect, useState, useMemo } from "react";
-import RankBar from "./RankBar";
-import CountDown from "../player/CountDown";
+import { useEffect, useState, useMemo } from "react";
+import RankBar from "../RankBar";
+import CountDown from "@/components/player/CountDown";
+import { getAllUsers } from "@/components/fetcher/FireBaseNameLogic";
 
 export default function GetData() {
-  const { socket } = useContext(SocketContext);
   const [rank, setRank] = useState([]);
   const [containerWidth, setContainerWidth] = useState(0);
   const [containerHeight, setContainerHeight] = useState(0);
   const [countdown, setCountdown] = useState("Ready?");
-  const [gamePhase, setGamePhase] = useState(0); // 0: Ready?, 1: 40秒, 2: 20秒, 3: 30秒, 4: 結束
+  const [gamePhase, setGamePhase] = useState(0);
   const [pauseAnimation, setPauseAnimation] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    if (socket) {
-      socket.on("allMessage", (data) => {
-        setRank([...data].reverse());
-      });
-    }
     if (typeof window !== "undefined") {
       setContainerWidth(window.innerWidth - 40);
       setContainerHeight(window.innerHeight - 40);
@@ -36,16 +29,12 @@ export default function GetData() {
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      if (socket) {
-        socket.off("allMessage");
-      }
     };
-  }, [socket]);
+  }, []);
 
   useEffect(() => {
     let timer;
     if (gamePhase === 0) {
-      // "Ready?" 階段
       timer = setTimeout(() => {
         setGamePhase(1);
         setCountdown(60);
@@ -57,16 +46,16 @@ export default function GetData() {
             clearInterval(timer);
             switch (gamePhase) {
               case 1:
-                setPauseAnimation(true); // case 1 開始時暫停動畫
+                setPauseAnimation(true);
                 setGamePhase(2);
                 return 20;
               case 2:
-                setPauseAnimation(false); // case 2 開始時恢復動畫
+                setPauseAnimation(false);
                 setGamePhase(3);
                 return 30;
               case 3:
                 setGamePhase(4);
-                setPauseAnimation(true); // case 2 開始時恢復動畫
+                setPauseAnimation(true);
                 return 0;
               default:
                 return prevCountdown;
@@ -93,14 +82,35 @@ export default function GetData() {
     }
   }, [gamePhase, router]);
 
+  // New useEffect for periodic data fetching
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const users = await getAllUsers();
+        setRank(users);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    // Initial fetch
+    fetchData();
+
+    // Set up interval for periodic fetching
+    const intervalId = setInterval(fetchData, 5000); // Fetch every 5 seconds
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []);
+
   const topHits = useMemo(() => {
     return [...rank]
-      .sort((a, b) => b.score - a.score)
+      .sort((a, b) => b.hit - a.hit)
       .slice(0, 10)
       .map((item, index) => ({
         rank: index + 1,
         name: item.name,
-        hit: item.score,
+        hit: item.hit,
       }));
   }, [rank]);
 

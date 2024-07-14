@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialPlayerData = { playerData: { name: "", score: 0 }, record: [] };
+const initialPlayerData = { playerData: { name: "", score: 0 } };
 
 const playerDataSlice = createSlice({
   name: "playerData",

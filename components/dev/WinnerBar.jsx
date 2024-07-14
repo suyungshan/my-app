@@ -67,10 +67,10 @@ export default function WinnerBar(props) {
               : index === 0
               ? "bg-decoration-white h-[calc(100%-12rem)]"
               : "bg-decoration-white h-[calc(100%-16rem)]"
-          } ${isAnimating ? "winner-animation" : ""}`}
+          } ${isAnimating ? "winner-animation" : ""} shadow-2xl `}
           key={index}
         >
-          <div className="flex gap-5 flex-col items-center">
+          <div className="flex gap-5 flex-col items-center ">
             <p className="text-center text-[60px]">{`${item.rank}`}</p>
             <div
               className={`relative ${
