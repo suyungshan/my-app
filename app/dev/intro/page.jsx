@@ -1,6 +1,6 @@
 import IntroductionPublic from "@/components/dev/IntroductionPublic";
-// import StartGame from "@/components/dev/StartGame";
-import StartGame from "@/components/dev/Firebase/StartGame";
+import StartGame from "@/components/dev/StartGame";
+// import StartGame from "@/components/dev/Firebase/StartGame";
 
 export default function Intro() {
   return (
