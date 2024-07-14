@@ -1,6 +1,6 @@
 import Introduction from "@/components/player/Introduction";
 // import StartGame from "@/components/dev/StartGame";
-// import StartGame from "@/components/dev/Firebase/StartGame";
+import StartGame from "@/components/dev/Firebase/StartGame";
 
 export default function Directions() {
   return (

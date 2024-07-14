@@ -31,33 +31,52 @@ export default function WinnerList() {
   }, []);
 
   useEffect(() => {
-    if (socket && !initializedRef.current) {
-      initializedRef.current = true;
+    if (!socket) return;
 
-      // 只在首次執行時發送 "firstConnect"
-      socket.emit("firstConnect");
+    const onConnect = () => {
+      console.log("Socket connected");
+      if (!initializedRef.current) {
+        console.log("Initializing...");
+        initializedRef.current = true;
 
-      // 設置一次性監聽器
-      const handleAllMessage = (data) => {
-        setRank([...data].reverse());
-        // 接收到數據後立即移除監聽器
-        socket.off("allMessage", handleAllMessage);
-      };
+        // 只在首次連接時發送 "firstConnect"
+        socket.emit("firstConnect");
 
-      socket.on("allMessage", handleAllMessage);
-    }
+        // 設置一次性監聽器
+        const handleAllMessage = (data) => {
+          console.log("Received all messages");
+          setRank([...data].reverse());
+          // 接收到數據後立即移除監聽器
+          socket.off("allMessage", handleAllMessage);
+        };
 
-    // 設置計時器，5 秒後斷開連線
-    const timer = setTimeout(() => {
-      socket.disconnect();
-    }, 5000);
+        socket.on("allMessage", handleAllMessage);
 
-    return () => {
-      clearTimeout(timer);
+        // 設置計時器，5 秒後斷開連線
+        const timer = setTimeout(() => {
+          console.log("Disconnecting after 5 seconds");
+          socket.disconnect();
+        }, 5000);
+
+        return () => {
+          clearTimeout(timer);
+          socket.off("allMessage", handleAllMessage);
+        };
+      }
     };
 
-    // 不需要清理函數，因為監聽器只會執行一次
+    socket.on("connect", onConnect);
+
+    // 如果 socket 已經連接，立即執行 onConnect
+    if (socket.connected) {
+      onConnect();
+    }
+
+    return () => {
+      socket.off("connect", onConnect);
+    };
   }, [socket]);
+
   // 使用 useMemo 計算 topHits
   const topHits = useMemo(() => {
     return [...rank]

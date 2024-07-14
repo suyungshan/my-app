@@ -4,14 +4,13 @@ import { SocketContext } from "@/components/fetcher/Socket";
 import styles from "./StartGame.module.css";
 
 export default function StartGame() {
-  // const { socket } = useContext(SocketContext);
-  // const start = () => {
-  //   socket.emit("Start", {
-  //     name: "Start",
-  //     message: "Start",
-  //   });
-  // };
-  const start = () => {};
+  const { socket } = useContext(SocketContext);
+  const start = () => {
+    socket.emit("Start", {
+      name: "Start",
+      message: "Start",
+    });
+  };
 
   return (
     <div>

@@ -24,12 +24,13 @@ export default function SocketProvider({ children }) {
       if (!hasRunTest.current) {
         // startLoadTest("http://localhost:3001");
         // startLoadTest("https://one0-hit-game-backend.onrender.com/");
+        // startLoadTest("https://hitgameback.zeabur.app/");
         hasRunTest.current = true;
       }
 
       // socketRef.current = io("http://localhost:3001");
       // socketRef.current = io("https://one0-hit-game-backend.onrender.com/");
-      socketRef.current = io("https://hitgamebackend.zeabur.app/");
+      socketRef.current = io("https://hitgameback.zeabur.app/");
 
       socketRef.current.on("connect", () => {
         setSocket(socketRef.current);
@@ -45,14 +46,13 @@ export default function SocketProvider({ children }) {
       socketRef.current.on("disconnect", () => {
         console.log("斷開連接");
         isConnected.current = false;
-        if (
-          pathname !== "/winner" ||
-          !maxConnectionsReached.current ||
-          !maxDataReached.current
-        ) {
-          setTimeout(() => {
-            socketRef.current.connect();
-          }, 2000);
+        if (!maxConnectionsReached.current || !maxDataReached.current) {
+          if (pathname !== "/dev/winner") {
+            setTimeout(() => {
+              console.log(pathname);
+              socketRef.current.connect();
+            }, 2000);
+          }
         }
       });
 

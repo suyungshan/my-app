@@ -1,6 +1,5 @@
 // import GameSet from "@/components/player/GameSet";
-// import GameSet from "@/components/player/Firebase/GameSet";
-import GameSet from "@/components/player/GameSet";
+import GameSet from "@/components/player/Firebase/GameSet";
 
 export default function GamePage() {
   return (
