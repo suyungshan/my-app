@@ -47,18 +47,18 @@ export default function AllName() {
     };
   }, [socket]);
 
-  const boxSize = 160; // 長方形方塊的大小
+  const boxSize = 160;
   const boxHeight = 75;
-  const margin = 10; // 方塊之間的間距
+  const margin = 10;
 
-  const rows = []; // 儲存每一行的方塊
-  let currentRow = []; // 當前行
-  let maxRowHeight = 0; // 最高行的高度
+  const rows = [];
+  let currentRow = [];
+  let maxRowHeight = 0;
 
   names.slice(0, 88).forEach((item, index) => {
     const box = (
       <div
-        key={`${item.name}-${item.isNew}`} // 使用名字和 isNew 屬性作為 key
+        key={`${item.name}-${item.isNew}`}
         className={`p-3 text-center justify-center border-4 rounded-md border-[#002060] bg-none text-[24px] font-[600] text-[#002060] truncate ${
           item.isNew ? styles.shake : ""
         }`}
@@ -76,21 +76,18 @@ export default function AllName() {
     const rowWidth = currentRow.reduce(
       (sum, box) => sum + box.props.style.width + margin,
       0
-    ); // 計算當前行的寬度
-    const boxWidth = boxSize + margin; // 包含 margin 的方塊寬度
+    );
+    const boxWidth = boxSize + margin;
 
     if (rowWidth + boxWidth > containerWidth) {
-      // 若當前行已滿,則將當前行加入 rows 中
       rows.push(currentRow);
-      maxRowHeight = Math.max(maxRowHeight, boxSize); // 更新最高行的高度
-      currentRow = [box]; // 重置當前行為新的方塊
+      maxRowHeight = Math.max(maxRowHeight, boxSize);
+      currentRow = [box];
     } else {
-      // 將方塊加入當前行
       currentRow.push(box);
     }
   });
 
-  // 將最後一行加入 rows 中
   if (currentRow.length > 0) {
     rows.push(currentRow);
     maxRowHeight = Math.max(maxRowHeight, boxSize);
@@ -104,26 +101,48 @@ export default function AllName() {
     <div className="flex flex-col items-center h-[100vh] py-2 gap-2">
       <div
         className="w-full text-center justify-center bg-none text-[32px] font-[600] text-[#002060] truncate"
-        // style={{ color: "transparent" }}
         onClick={turnToIntro}
       >
         驗證碼：0807
       </div>
       <div
-        className="flex flex-col items-center overflow-y-hidden overflow-x-hidden border-x-2 border-b-2 border-[#002060] gap-8 py-3"
+        className="flex flex-col items-center overflow-y-hidden overflow-x-hidden border-x-2 border-b-2 border-[#002060]"
         style={{
           width: containerWidth,
           height: containerHeight,
         }}
       >
-        <div>
+        <div className="flex-1 overflow-y-hidden py-4">
           {rows.map((row, rowIndex) => (
-            <div key={rowIndex} className="flex ">
+            <div key={rowIndex} className="flex">
               {row.map((box, boxIndex) => (
                 <div key={boxIndex}>{box}</div>
               ))}
             </div>
           ))}
+        </div>
+        <div className="flex justify-between w-full h-1/2 border-t-2 border-[#002060]">
+          <div className="w-1/3 h-full flex items-center justify-start pl-4">
+            <img
+              src="/婚禮遊戲 QR Code.PNG"
+              alt="QR Code 1"
+              className="max-w-full max-h-full object-contain"
+            />
+          </div>
+          <div className="w-1/3 h-full flex items-center justify-center">
+            <img
+              src="/婚禮遊戲 QR Code.PNG"
+              alt="QR Code 2"
+              className="max-w-full max-h-full object-contain"
+            />
+          </div>
+          <div className="w-1/3 h-full flex items-center justify-end pr-4">
+            <img
+              src="/婚禮遊戲 QR Code.PNG"
+              alt="QR Code 3"
+              className="max-w-full max-h-full object-contain"
+            />
+          </div>
         </div>
       </div>
     </div>
