@@ -55,7 +55,7 @@ export default function NameInput() {
     setTimeout(() => {
       if (!warningReceived) {
         // If no warning was received, proceed with the screen transition
-        // router.push("/player/instructions");
+        router.push("/player/instructions");
       }
       // Clean up the warning event listener
       socket.off("warning");
