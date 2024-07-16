@@ -121,7 +121,7 @@ export default function AllName() {
             </div>
           ))}
         </div>
-        <div className="flex justify-between w-full h-1/2 border-t-2 border-[#002060]">
+        <div className="flex justify-between w-full h-1/3 border-t-2 border-[#002060]">
           <div className="w-1/3 h-full flex items-center justify-start pl-4">
             <img
               src="/婚禮遊戲 QR Code.PNG"
