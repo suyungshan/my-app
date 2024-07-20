@@ -55,7 +55,7 @@ export default function AllName() {
   let currentRow = [];
   let maxRowHeight = 0;
 
-  names.slice(0, 88).forEach((item, index) => {
+  names.slice(0, 84).forEach((item, index) => {
     const box = (
       <div
         key={`${item.name}-${item.isNew}`}
