@@ -29,7 +29,9 @@ export default function SocketProvider({ children }) {
       }
 
       // socketRef.current = io("http://localhost:3001");
-      socketRef.current = io("https://one0-hit-game-backend.onrender.com/");
+      socketRef.current = io(
+        "https://one0-hit-game-backend-vnix.onrender.com/"
+      );
       // socketRef.current = io("https://hitgameback.zeabur.app/");
 
       socketRef.current.on("connect", () => {
